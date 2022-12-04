@@ -1,0 +1,54 @@
+enum SortType {
+  asc
+  desc
+}
+
+type Query {
+  empty: String
+}
+
+type Mutation {
+  empty: String
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: String
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: Boolean
+}
+
+input IntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: Int
+}
+
+type BatchPayload {
+  count: Int!
+}
+
+input UniqueInput {
+  id: ID!
+}
+
+type Token {
+  token: String!
+}

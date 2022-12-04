@@ -1,0 +1,43 @@
+extend type Query {
+  product(where: ProductWhereInput): Product
+  products(data: ProductsFindManyInput): Products
+}
+
+extend type Mutation {
+  createProduct(data: ProductCreateInput!): Product
+  updateProduct(where: UniqueInput!, data: ProductUpdateInput): Product
+  deleteProduct(where: UniqueInput!): Product
+}
+
+type Product {
+  id: ID
+  title: String
+  price: Int
+}
+
+type Products {
+  items: [Product!]
+  count: Int
+}
+
+input ProductsFindManyInput {
+  where: ProductWhereInput
+  take: Int
+  skip: Int
+}
+
+input ProductWhereInput {
+  id: StringFilter
+  title: StringFilter
+  price: IntFilter
+}
+
+input ProductCreateInput {
+  title: String!
+  price: Int!
+}
+
+input ProductUpdateInput {
+  title: String
+  price: Int
+}
