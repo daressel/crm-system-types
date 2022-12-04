@@ -3,6 +3,11 @@ enum SortType {
   desc
 }
 
+scalar Name
+scalar Price
+scalar Date
+scalar Email
+
 type Query {
   empty: String
 }

@@ -11,8 +11,8 @@ extend type Mutation {
 
 type Product {
   id: ID
-  title: String
-  price: Int
+  title: Name
+  price: Price
 }
 
 type Products {
@@ -33,11 +33,11 @@ input ProductWhereInput {
 }
 
 input ProductCreateInput {
-  title: String!
-  price: Int!
+  title: Name!
+  price: Price!
 }
 
 input ProductUpdateInput {
-  title: String
-  price: Int
+  title: Name
+  price: Price
 }

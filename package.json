@@ -8,7 +8,7 @@
     "lib/**/*"
   ],
   "scripts": {
-    "build": "rimraf lib && tsc && npm run codegen",
+    "build": "rimraf lib && tsc && npm run codegen && node schema-builder.js",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "version": "npm run format && git add -A src",

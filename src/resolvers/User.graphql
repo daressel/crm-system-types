@@ -1,0 +1,12 @@
+extend type Query {
+  me: User
+}
+
+type User {
+  id: ID!
+  email: Email
+  firstName: Name
+  lastName: Name
+  createdAt: Date
+  updatedAt: Date
+}
