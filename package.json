@@ -1,6 +1,6 @@
 {
   "name": "crm-system-types",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Test",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
