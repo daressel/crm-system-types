@@ -11,13 +11,6 @@ const config: CodegenConfig = {
         'typescript-document-nodes',
       ],
     },
-    'lib/generated/graphql.ts': {
-      plugins: [
-        'typescript',
-        'typescript-resolvers',
-        'typescript-document-nodes',
-      ],
-    },
     // './graphql.schema.json': {
     //   plugins: ['introspection'],
     // },
