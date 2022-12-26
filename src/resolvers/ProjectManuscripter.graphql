@@ -1,0 +1,109 @@
+input ProjectManuscripterUniqueInput {
+  id: ID
+  projectMemberId: ID
+}
+
+extend type Query {
+  projectManuscripter(
+    where: ProjectManuscripterUniqueInput!
+  ): ProjectManuscripter
+  projectManuscripters(
+    where: ProjectManuscripterWhereInput
+    orderBy: ProjectManuscripterOrderByInput
+    take: Int
+    skip: Int
+  ): ProjectManuscripters
+}
+
+extend type Mutation {
+  createProjectManuscripters(
+    where: UniqueInput
+    data: ProjectManuscriptersConnectOrCreate
+  ): ProductionProductItem
+  updateProjectManuscripters(
+    where: ProjectManuscripterWhereInput
+    data: ProjectManuscripterUpdateInput!
+  ): BatchPayload
+  deleteProjectManuscripters(where: ProjectManuscripterWhereInput): BatchPayload
+}
+
+type ProjectManuscripter {
+  id: String
+
+  projectMember: ProjectMember
+  projectMemberId: ID
+
+  status: ProjectUserStatus
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type ProjectManuscripters {
+  projectManuscripters: [ProjectManuscripter!]
+  count(where: ProjectManuscripterWhereInput): Int
+}
+
+input ProjectManuscripterRelation {
+  some: ProjectManuscripterWhereInput
+  every: ProjectManuscripterWhereInput
+  none: ProjectManuscripterWhereInput
+}
+
+extend type ProjectMember {
+  projectManuscripter: ProjectManuscripter
+}
+
+extend input ProjectMemberWhereInput {
+  projectManuscripter: ProjectManuscripterRelation
+}
+
+input ProjectManuscripterWhereInput {
+  id: StringFilter
+
+  projectMember: ProjectMemberWhereInput
+  projectMemberId: StringFilter
+
+  status: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+  deletedAt: StringFilter
+}
+
+input ProjectManuscripterOrderByInput {
+  id: SortType
+
+  projectMember: ProjectMemberOrderByInput
+  projectMemberId: SortType
+
+  status: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+  deletedAt: SortType
+}
+
+input ProjectManuscripterCreateInput {
+  projectMember: ProjectMemberConnection
+}
+
+input ProjectManuscripterUpdateInput {
+  deletedAt: Date
+  status: ProjectUserStatus
+}
+
+#//!! I think, that need only create for projectManuscripters and etc
+input ProjectManuscripterConnection {
+  create: ProjectManuscripterCreateInput!
+}
+
+input ProjectManuscriptersConnectOrCreate {
+  connectOrCreate: [ProjectManuscriptersConnectOrCreateInput]
+}
+
+input ProjectManuscriptersConnectOrCreateInput {
+  create: ProjectManuscripterCreateInput!
+  where: ProjectManuscripterUniqueInput
+}

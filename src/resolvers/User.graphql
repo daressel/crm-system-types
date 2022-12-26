@@ -1,12 +1,128 @@
+input UserUniqueInput {
+  email: String
+  id: String
+}
+
 extend type Query {
   me: User
+  user(where: UserUniqueInput!): User
+  users(
+    where: UserWhereInput
+    orderBy: UserOrderByInput
+    take: Int
+    skip: Int
+  ): Users
+  getTokenForRegistration(
+    email: String!
+    firstName: String!
+    lastName: String!
+    phone: String
+  ): Token
+  testQuery: String
+  fillDB: Boolean
+}
+
+extend type Mutation {
+  login(email: String!, password: String!): User
+  logout: Boolean
+
+  verifyEmail(token: String!, verifyCode: String!): Token
+  changeAccountType(studioId: String, asClient: Boolean): User
+
+  updateProfile(where: UniqueInput!, data: UserUpdateInput!): User
+}
+
+extend type Subscription {
+  onlineStatus: [User]
 }
 
 type User {
-  id: ID!
-  email: Email
-  firstName: Name
-  lastName: Name
+  id: ID
+  email: String
+  firstName: String
+  lastName: String
+  avatar: String
+  phone: String
+  online: Boolean
+  active: Boolean
+
+  isClient: Boolean
+
+  studioMember: StudioMember
+  studioMemberId: ID
+
+  studio: Studio
+
+  languages: [Language]
+
+  lastAction: Date
   createdAt: Date
   updatedAt: Date
+}
+
+type Users {
+  users: [User!]
+  count(where: UserWhereInput): Int
+}
+
+input UserCreateInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  avatar: String
+  phone: String
+  languages: [Language!]
+}
+
+input UserUpdateInput {
+  email: String
+  firstName: String
+  lastName: String
+  avatar: String
+  phone: String
+  languages: [Language!]
+}
+
+input UserWhereInput {
+  id: StringFilter
+  email: StringFilter
+  avatar: StringFilter
+  firstName: StringFilter
+  lastName: StringFilter
+  phone: StringFilter
+  online: BoolFilter
+  active: BoolFilter
+  lastAction: StringFilter
+  currentClientId: StringFilter
+  studioMemberId: StringFilter
+  languages: LanguageFilter
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+}
+
+input UserOrderByInput {
+  id: SortType
+  email: SortType
+  firstName: SortType
+  lastName: SortType
+  phone: SortType
+  lastAction: SortType
+  currentClientId: SortType
+  studioMemberId: SortType
+}
+
+input UserConnection {
+  connectOrCreate: UserConnectOrCreate
+  connect: UserUniqueInput
+  create: UserCreateInput
+}
+
+input UserChatConnection {
+  connect: [UserUniqueInput!]
+}
+
+input UserConnectOrCreate {
+  where: UserUniqueInput!
+  create: UserCreateInput!
 }

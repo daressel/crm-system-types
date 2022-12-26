@@ -1,0 +1,88 @@
+input BrieferUniqueInput {
+  id: ID
+  studioMemberId: ID
+}
+
+extend type Query {
+  briefer(where: BrieferUniqueInput!): Briefer
+  briefers(
+    where: BrieferWhereInput
+    orderBy: BrieferOrderByInput
+    take: Int
+    skip: Int
+  ): Briefers
+}
+
+extend type Mutation {
+  createBriefers(data: [BrieferCreateInput!]!): BatchPayload
+  updateBriefers(
+    where: BrieferWhereInput
+    data: BrieferUpdateInput!
+  ): BatchPayload
+  deleteBriefers(where: BrieferWhereInput): BatchPayload
+}
+
+type Briefer {
+  id: String
+
+  studioMember: StudioMember
+  studioMemberId: ID
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type Briefers {
+  briefers: [Briefer!]
+  count(where: BrieferWhereInput): Int
+}
+
+input BrieferRelation {
+  some: BrieferWhereInput
+  every: BrieferWhereInput
+  none: BrieferWhereInput
+}
+
+extend type StudioMember {
+  briefer: Briefer
+}
+
+extend input StudioMemberCreateInput {
+  briefer: BrieferConnection
+}
+
+input BrieferWhereInput {
+  id: StringFilter
+
+  studioMember: StudioMemberWhereInput
+  studioMemberId: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+  deletedAt: StringFilter
+}
+
+input BrieferOrderByInput {
+  id: SortType
+
+  studioMember: StudioMemberOrderByInput
+  studioMemberId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+  deletedAt: SortType
+}
+
+input BrieferCreateInput {
+  studioMemberId: ID
+}
+
+input BrieferUpdateInput {
+  deletedAt: Date
+}
+
+#//!! I think, that need only create for briefers and etc
+input BrieferConnection {
+  create: BrieferCreateInput!
+}

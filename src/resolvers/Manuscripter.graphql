@@ -1,0 +1,88 @@
+input ManuscripterUniqueInput {
+  id: ID
+  studioMemberId: ID
+}
+
+extend type Query {
+  manuscripter(where: ManuscripterUniqueInput!): Manuscripter
+  manuscripters(
+    where: ManuscripterWhereInput
+    orderBy: ManuscripterOrderByInput
+    take: Int
+    skip: Int
+  ): Manuscripters
+}
+
+extend type Mutation {
+  createManuscripters(data: [ManuscripterCreateInput!]!): BatchPayload
+  updateManuscripters(
+    where: ManuscripterWhereInput
+    data: ManuscripterUpdateInput!
+  ): BatchPayload
+  deleteManuscripters(where: ManuscripterWhereInput): BatchPayload
+}
+
+type Manuscripter {
+  id: String
+
+  studioMember: StudioMember
+  studioMemberId: ID
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type Manuscripters {
+  manuscripters: [Manuscripter!]
+  count(where: ManuscripterWhereInput): Int
+}
+
+input ManuscripterRelation {
+  some: ManuscripterWhereInput
+  every: ManuscripterWhereInput
+  none: ManuscripterWhereInput
+}
+
+extend type StudioMember {
+  manuscripter: Manuscripter
+}
+
+extend input StudioMemberCreateInput {
+  manuscripter: ManuscripterConnection
+}
+
+input ManuscripterWhereInput {
+  id: StringFilter
+
+  studioMember: StudioMemberWhereInput
+  studioMemberId: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+  deletedAt: StringFilter
+}
+
+input ManuscripterOrderByInput {
+  id: SortType
+
+  studioMember: StudioMemberOrderByInput
+  studioMemberId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+  deletedAt: SortType
+}
+
+input ManuscripterCreateInput {
+  studioMemberId: ID
+}
+
+input ManuscripterUpdateInput {
+  deletedAt: Date
+}
+
+#//!! I think, that need only create for manuscripters and etc
+input ManuscripterConnection {
+  create: ManuscripterCreateInput!
+}

@@ -1,0 +1,93 @@
+extend type Query {
+  unreadMessage(where: UnreadMessageUniqueInput!): UnreadMessage
+  unreadMessages(
+    where: UnreadMessageWhereInput
+    orderBy: UnreadMessageOrderByInput
+    take: Int
+    skip: Int
+  ): UnreadMessages
+}
+
+extend type Mutation {
+  createUnreadMessages(data: [UnreadMessageCreateInput!]!): UnreadMessages
+  updateUnreadMessages(
+    where: UnreadMessageWhereInput!
+    data: UnreadMessageUpdateInput!
+  ): BatchPayload
+  deleteUnreadMessages(where: UnreadMessageWhereInput!): BatchPayload
+}
+
+type UnreadMessage {
+  id: ID
+
+  message: Message
+  messageId: ID
+
+  user: User
+  userId: ID
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type UnreadMessages {
+  unreadMessages: [UnreadMessage!]
+  count(where: UnreadMessageWhereInput): Int
+}
+
+extend type Message {
+  unreadMessages(where: UnreadMessageWhereInput): UnreadMessages
+}
+
+extend type User {
+  unreadMessages(where: UnreadMessageWhereInput): UnreadMessages
+}
+
+input UnreadMessageUniqueInput {
+  id: ID!
+}
+
+input UnreadMessageCreateInput {
+  messageId: ID!
+  userId: ID!
+}
+
+input UnreadMessageWhereInput {
+  id: StringFilter
+
+  message: MessageWhereInput
+  messageId: StringFilter
+
+  user: UserWhereInput
+  userId: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+}
+
+input UnreadMessageOrderByInput {
+  id: SortType
+
+  message: MessageWhereInput
+  messageId: SortType
+
+  user: UserWhereInput
+  userId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input UnreadMessageRelation {
+  some: UnreadMessageWhereInput
+  every: UnreadMessageWhereInput
+  none: UnreadMessageWhereInput
+}
+
+input UnreadMessageUpdateInput {
+  updatedAt: Date
+}
+
+input UnreadMessageConnection {
+  create: UnreadMessageCreateInput!
+}

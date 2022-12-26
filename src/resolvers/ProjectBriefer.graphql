@@ -1,0 +1,107 @@
+input ProjectBrieferUniqueInput {
+  id: ID
+  projectMemberId: ID
+}
+
+extend type Query {
+  projectBriefer(where: ProjectBrieferUniqueInput!): ProjectBriefer
+  projectBriefers(
+    where: ProjectBrieferWhereInput
+    orderBy: ProjectBrieferOrderByInput
+    take: Int
+    skip: Int
+  ): ProjectBriefers
+}
+
+extend type Mutation {
+  createProjectBriefers(
+    where: UniqueInput
+    data: ProjectBriefersConnectOrCreate
+  ): ProductionProductItem
+  updateProjectBriefers(
+    where: ProjectBrieferWhereInput
+    data: ProjectBrieferUpdateInput!
+  ): BatchPayload
+  deleteProjectBriefers(where: ProjectBrieferWhereInput): BatchPayload
+}
+
+type ProjectBriefer {
+  id: String
+
+  projectMember: ProjectMember
+  projectMemberId: ID
+
+  status: ProjectUserStatus
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type ProjectBriefers {
+  projectBriefers: [ProjectBriefer!]
+  count(where: ProjectBrieferWhereInput): Int
+}
+
+input ProjectBrieferRelation {
+  some: ProjectBrieferWhereInput
+  every: ProjectBrieferWhereInput
+  none: ProjectBrieferWhereInput
+}
+
+extend type ProjectMember {
+  projectBriefer: ProjectBriefer
+}
+
+extend input ProjectMemberWhereInput {
+  projectBriefer: ProjectBrieferRelation
+}
+
+input ProjectBrieferWhereInput {
+  id: StringFilter
+
+  projectMember: ProjectMemberWhereInput
+  projectMemberId: StringFilter
+
+  status: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+  deletedAt: StringFilter
+}
+
+input ProjectBrieferOrderByInput {
+  id: SortType
+
+  projectMember: ProjectMemberOrderByInput
+  projectMemberId: SortType
+
+  status: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+  deletedAt: SortType
+}
+
+input ProjectBrieferCreateInput {
+  projectMember: ProjectMemberConnection
+}
+
+input ProjectBrieferUpdateInput {
+  deletedAt: Date
+  status: ProjectUserStatus
+}
+
+#//!! I think, that need only create for projectBriefers and etc
+input ProjectBrieferConnection {
+  create: ProjectBrieferCreateInput!
+}
+
+input ProjectBriefersConnectOrCreate {
+  connectOrCreate: [ProjectBriefersConnectOrCreateInput]
+}
+
+input ProjectBriefersConnectOrCreateInput {
+  create: ProjectBrieferCreateInput!
+  where: ProjectBrieferUniqueInput
+}

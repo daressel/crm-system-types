@@ -1,0 +1,109 @@
+input ProjectStoryboarderUniqueInput {
+  id: ID
+  projectMemberId: ID
+}
+
+extend type Query {
+  projectStoryboarder(
+    where: ProjectStoryboarderUniqueInput!
+  ): ProjectStoryboarder
+  projectStoryboarders(
+    where: ProjectStoryboarderWhereInput
+    orderBy: ProjectStoryboarderOrderByInput
+    take: Int
+    skip: Int
+  ): ProjectStoryboarders
+}
+
+extend type Mutation {
+  createProjectStoryboarders(
+    where: UniqueInput
+    data: ProjectStoryboardersConnectOrCreate
+  ): ProductionProductItem
+  updateProjectStoryboarders(
+    where: ProjectStoryboarderWhereInput
+    data: ProjectStoryboarderUpdateInput!
+  ): BatchPayload
+  deleteProjectStoryboarders(where: ProjectStoryboarderWhereInput): BatchPayload
+}
+
+type ProjectStoryboarder {
+  id: String
+
+  projectMember: ProjectMember
+  projectMemberId: ID
+
+  status: ProjectUserStatus
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type ProjectStoryboarders {
+  projectStoryboarders: [ProjectStoryboarder!]
+  count(where: ProjectStoryboarderWhereInput): Int
+}
+
+input ProjectStoryboarderRelation {
+  some: ProjectStoryboarderWhereInput
+  every: ProjectStoryboarderWhereInput
+  none: ProjectStoryboarderWhereInput
+}
+
+extend type ProjectMember {
+  projectStoryboarder: ProjectStoryboarder
+}
+
+extend input ProjectMemberWhereInput {
+  projectStoryboarder: ProjectStoryboarderRelation
+}
+
+input ProjectStoryboarderWhereInput {
+  id: StringFilter
+
+  projectMember: ProjectMemberWhereInput
+  projectMemberId: StringFilter
+
+  status: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+  deletedAt: StringFilter
+}
+
+input ProjectStoryboarderOrderByInput {
+  id: SortType
+
+  projectMember: ProjectMemberOrderByInput
+  projectMemberId: SortType
+
+  status: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+  deletedAt: SortType
+}
+
+input ProjectStoryboarderCreateInput {
+  projectMember: ProjectMemberConnection
+}
+
+input ProjectStoryboarderUpdateInput {
+  deletedAt: Date
+  status: ProjectUserStatus
+}
+
+#//!! I think, that need only create for projectStoryboarders and etc
+input ProjectStoryboarderConnection {
+  create: ProjectStoryboarderCreateInput!
+}
+
+input ProjectStoryboardersConnectOrCreate {
+  connectOrCreate: [ProjectManuscriptersConnectOrCreateInput]
+}
+
+input ProjectStoryboardersConnectOrCreateInput {
+  create: ProjectManuscripterCreateInput!
+  where: ProjectManuscripterUniqueInput
+}

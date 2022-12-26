@@ -1,0 +1,109 @@
+extend type Query {
+  invite(where: UniqueInput!): Invite
+  invites(
+    where: InviteWhereInput
+    orderBy: InviteOrderByInput
+    take: Int
+    skip: Int
+  ): Invites
+  sendedInvites(
+    where: InviteWhereInput
+    orderBy: InviteOrderByInput
+    take: Int
+    skip: Int
+  ): Invites
+}
+
+extend type Mutation {
+  createInvite(data: InviteCreateInput!): Invite
+  updateInvite(where: UniqueInput!, data: InviteUpdateInput!): Invite
+  deleteInvite(where: UniqueInput!): Invite
+}
+
+extend type Subscription {
+  invite: Invite
+}
+
+type Invite {
+  id: String
+
+  title: String
+  modalName: String
+
+  project: Project
+  projectId: ID
+
+  projectTask: ProjectTask
+
+  user: User
+  userId: ID
+
+  invitedByUser: User
+  invitedByUserId: String
+
+  chat: Chat
+  chatId: ID
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Invites {
+  invites: [Invite!]
+  count(where: InviteWhereInput): Int
+}
+
+input InviteCreateInput {
+  title: String
+  modalName: String
+  projectId: ID!
+  userId: ID!
+}
+
+input InviteUpdateInput {
+  title: String
+}
+
+input InviteWhereInput {
+  id: StringFilter
+
+  userId: StringFilter
+  createdByUserId: StringFilter
+
+  title: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+}
+
+input InviteOrderByInput {
+  id: SortType
+
+  title: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input InviteRelationInput {
+  some: InviteWhereInput
+  every: InviteWhereInput
+  none: InviteWhereInput
+}
+
+extend type User {
+  invites: Invites
+}
+
+extend input UserWhereInput {
+  invites: InviteRelationInput
+}
+
+extend type Chat {
+  invite(
+    where: InviteWhereInput
+    orderBy: InviteOrderByInput
+    skip: Int
+    take: Int
+  ): Invite
+}

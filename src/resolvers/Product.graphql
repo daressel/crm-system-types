@@ -1,43 +1,143 @@
 extend type Query {
-  product(where: ProductWhereInput): Product
-  products(data: ProductsFindManyInput): Products
+  product(where: UniqueInput): Product
+  products(
+    where: ProductWhereInput
+    orderBy: ProductOrderByInput
+    take: Int
+    skip: Int
+  ): Products
+
+  isExistProduct(where: ProductWhereInput): Boolean
 }
 
 extend type Mutation {
-  createProduct(data: ProductCreateInput!): Product
-  updateProduct(where: UniqueInput!, data: ProductUpdateInput): Product
-  deleteProduct(where: UniqueInput!): Product
+  createProducts(data: [ProductCreateInput!]!): BatchPayload
+  updateProducts(
+    where: ProductWhereInput
+    data: ProductUpdateInput!
+  ): BatchPayload
+  deleteProducts(where: ProductWhereInput): BatchPayload
 }
 
 type Product {
   id: ID
-  title: Name
-  price: Price
+  title: String
+  price: Int
+  amount: Int
+  discount: Int
+  tax: Int
+
+  withTax: Boolean
+  isSet: Boolean
+
+  studio: Studio
+  studioId: ID
+
+  createdAt: Date
+  updatedAt: Date
 }
 
 type Products {
-  items: [Product!]
-  count: Int
+  products: [Product!]
+  count(where: ProductWhereInput): Int
 }
 
-input ProductsFindManyInput {
-  where: ProductWhereInput
-  take: Int
-  skip: Int
+input ProductRelation {
+  some: ProductWhereInput
+  every: ProductWhereInput
+  none: ProductWhereInput
+}
+
+extend type Studio {
+  products(
+    where: ProductWhereInput
+    orderBy: ProductOrderByInput
+    take: Int
+    skip: Int
+  ): Products
+}
+
+extend input StudioWhereInput {
+  products: ProductRelation
 }
 
 input ProductWhereInput {
   id: StringFilter
   title: StringFilter
   price: IntFilter
+  amount: IntFilter
+  discount: IntFilter
+  tax: IntFilter
+
+  withTax: BoolFilter
+  isSet: BoolFilter
+
+  studio: StudioWhereInput
+  studioId: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+
+  AND: [ProductWhereInput!]
+  OR: [ProductWhereInput!]
+  NOT: [ProductWhereInput!]
+}
+
+input ProductOrderByInput {
+  id: SortType
+  title: SortType
+  price: SortType
+  amount: SortType
+  discount: SortType
+  tax: SortType
+
+  withTax: SortType
+  isSet: SortType
+
+  studio: StudioOrderByInput
+  studioId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
 }
 
 input ProductCreateInput {
-  title: Name!
-  price: Price!
+  title: String!
+  price: Int!
+  amount: Int
+  discount: Int
+  tax: Int
+
+  productItems: ProductItemConnection
+
+  withTax: Boolean
+  isSet: Boolean
 }
 
 input ProductUpdateInput {
-  title: Name
-  price: Price
+  title: String
+  price: Int
+  amount: Int
+  discount: Int
+  tax: Int
+
+  withTax: Boolean
+  isSet: Boolean
+}
+
+input ProductsConnection {
+  create: [ProductCreateInput!]
+  connectOrCreate: [ProductConnectOrCreateInput!]
+  connect: [UniqueInput!]
+}
+
+input ProductConnection {
+  create: ProductCreateInput
+  connectOrCreate: ProductConnectOrCreateInput
+  connect: UniqueInput
+}
+
+input ProductConnectOrCreateInput {
+  where: UniqueInput!
+  create: ProductCreateInput!
 }

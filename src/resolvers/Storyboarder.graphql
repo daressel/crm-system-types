@@ -1,0 +1,88 @@
+input StoryboarderUniqueInput {
+  id: ID
+  studioMemberId: ID
+}
+
+extend type Query {
+  storyboarder(where: StoryboarderUniqueInput!): Storyboarder
+  storyboarders(
+    where: StoryboarderWhereInput
+    orderBy: StoryboarderOrderByInput
+    take: Int
+    skip: Int
+  ): Storyboarders
+}
+
+extend type Mutation {
+  createStoryboarders(data: [StoryboarderCreateInput!]!): BatchPayload
+  updateStoryboarders(
+    where: StoryboarderWhereInput
+    data: StoryboarderUpdateInput!
+  ): BatchPayload
+  deleteStoryboarders(where: StoryboarderWhereInput): BatchPayload
+}
+
+type Storyboarder {
+  id: String
+
+  studioMember: StudioMember
+  studioMemberId: ID
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type Storyboarders {
+  storyboarders: [Storyboarder!]
+  count(where: StoryboarderWhereInput): Int
+}
+
+input StoryboarderRelation {
+  some: StoryboarderWhereInput
+  every: StoryboarderWhereInput
+  none: StoryboarderWhereInput
+}
+
+extend type StudioMember {
+  storyboarder: Storyboarder
+}
+
+extend input StudioMemberCreateInput {
+  storyboarder: StoryboarderConnection
+}
+
+input StoryboarderWhereInput {
+  id: StringFilter
+
+  studioMember: StudioMemberWhereInput
+  studioMemberId: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+  deletedAt: StringFilter
+}
+
+input StoryboarderOrderByInput {
+  id: SortType
+
+  studioMember: StudioMemberOrderByInput
+  studioMemberId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+  deletedAt: SortType
+}
+
+input StoryboarderCreateInput {
+  studioMemberId: ID
+}
+
+input StoryboarderUpdateInput {
+  deletedAt: Date
+}
+
+#//!! I think, that need only create for storyboarders and etc
+input StoryboarderConnection {
+  create: StoryboarderCreateInput!
+}

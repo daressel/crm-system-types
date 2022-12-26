@@ -1,0 +1,88 @@
+input AnimatorUniqueInput {
+  id: ID
+  studioMemberId: ID
+}
+
+extend type Query {
+  animator(where: AnimatorUniqueInput!): Animator
+  animators(
+    where: AnimatorWhereInput
+    orderBy: AnimatorOrderByInput
+    take: Int
+    skip: Int
+  ): Animators
+}
+
+extend type Mutation {
+  createAnimators(data: [AnimatorCreateInput!]!): BatchPayload
+  updateAnimators(
+    where: AnimatorWhereInput
+    data: AnimatorUpdateInput!
+  ): BatchPayload
+  deleteAnimators(where: AnimatorWhereInput): BatchPayload
+}
+
+type Animator {
+  id: String
+
+  studioMember: StudioMember
+  studioMemberId: ID
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type Animators {
+  animators: [Animator!]
+  count(where: AnimatorWhereInput): Int
+}
+
+input AnimatorRelation {
+  some: AnimatorWhereInput
+  every: AnimatorWhereInput
+  none: AnimatorWhereInput
+}
+
+extend type StudioMember {
+  animator: Animator
+}
+
+extend input StudioMemberCreateInput {
+  animator: AnimatorConnection
+}
+
+input AnimatorWhereInput {
+  id: StringFilter
+
+  studioMember: StudioMemberWhereInput
+  studioMemberId: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+  deletedAt: StringFilter
+}
+
+input AnimatorOrderByInput {
+  id: SortType
+
+  studioMember: StudioMemberOrderByInput
+  studioMemberId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+  deletedAt: SortType
+}
+
+input AnimatorCreateInput {
+  studioMemberId: ID
+}
+
+input AnimatorUpdateInput {
+  deletedAt: Date
+}
+
+#//!! I think, that need only create for animators and etc
+input AnimatorConnection {
+  create: AnimatorCreateInput!
+}

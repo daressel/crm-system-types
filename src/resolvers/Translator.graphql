@@ -1,0 +1,88 @@
+input TranslatorUniqueInput {
+  id: ID
+  studioMemberId: ID
+}
+
+extend type Query {
+  translator(where: TranslatorUniqueInput!): Translator
+  translators(
+    where: TranslatorWhereInput
+    orderBy: TranslatorOrderByInput
+    take: Int
+    skip: Int
+  ): Translators
+}
+
+extend type Mutation {
+  createTranslators(data: [TranslatorCreateInput!]!): BatchPayload
+  updateTranslators(
+    where: TranslatorWhereInput
+    data: TranslatorUpdateInput!
+  ): BatchPayload
+  deleteTranslators(where: TranslatorWhereInput): BatchPayload
+}
+
+type Translator {
+  id: String
+
+  studioMember: StudioMember
+  studioMemberId: ID
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type Translators {
+  translators: [Translator!]
+  count(where: TranslatorWhereInput): Int
+}
+
+input TranslatorRelation {
+  some: TranslatorWhereInput
+  every: TranslatorWhereInput
+  none: TranslatorWhereInput
+}
+
+extend type StudioMember {
+  translator: Translator
+}
+
+extend input StudioMemberCreateInput {
+  translator: TranslatorConnection
+}
+
+input TranslatorWhereInput {
+  id: StringFilter
+
+  studioMember: StudioMemberWhereInput
+  studioMemberId: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+  deletedAt: StringFilter
+}
+
+input TranslatorOrderByInput {
+  id: SortType
+
+  studioMember: StudioMemberOrderByInput
+  studioMemberId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+  deletedAt: SortType
+}
+
+input TranslatorCreateInput {
+  studioMemberId: ID
+}
+
+input TranslatorUpdateInput {
+  deletedAt: Date
+}
+
+#//!! I think, that need only create for translators and etc
+input TranslatorConnection {
+  create: TranslatorCreateInput!
+}

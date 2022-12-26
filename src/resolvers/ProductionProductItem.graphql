@@ -1,0 +1,349 @@
+input ProductionProductItemUniqueInput {
+  id: ID
+  title_productionProductId: ProductionProductItemUniqueFields
+}
+
+input ProductionProductItemUniqueFields {
+  title: String!
+  productionProductId: ID!
+}
+
+extend type Query {
+  productionProductItem(
+    where: ProductionProductItemUniqueInput!
+  ): ProductionProductItem
+  productionProductItems(
+    where: ProductionProductItemWhereInput
+    orderBy: ProductionProductItemOrderByInput
+    skip: Int
+    take: Int
+  ): ProductionProductItems
+
+  isExistProductionProductItem(where: ProductionProductItemWhereInput): Boolean
+
+  productionProductItemsStage(where: ProjectUniqueInput): ProductionProductItems
+}
+
+extend type Mutation {
+  createProductionProductItems(
+    where: ProductionProductUniqueInput!
+    data: ProductionProductItemsConnection!
+  ): ProductionProduct
+  updateProductionProductItems(
+    where: ProductionProductItemWhereInput
+    data: ProductionProductItemUpdateInput!
+  ): BatchPayload
+  deleteProductionProductItems(
+    where: ProductionProductItemWhereInput
+  ): BatchPayload
+}
+
+type ProductionProductItem {
+  id: ID
+  title: String
+  forAll: Boolean
+
+  productionProduct: ProductionProduct
+  productionProductId: ID
+
+  isBrief: Boolean
+  isManuscript: Boolean
+  isTranslation: Boolean
+  isVoiceover: Boolean
+  isStoryboard: Boolean
+  isIllustration: Boolean
+  isAnimation: Boolean
+
+  briefers: ProjectBriefers
+
+  manuscripters: ProjectManuscripters
+
+  translators: ProjectTranslators
+  translatorId: ID
+
+  voiceoverers: ProjectVoiceoverers
+
+  storyboarders: ProjectStoryboarders
+
+  illustrators: ProjectIllustrators
+
+  animators: ProjectAnimators
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type ProductionProductItems {
+  productionProductItems: [ProductionProductItem!]
+  count(where: ProductionProductItemWhereInput): Int
+}
+
+input ProductionProductItemRelationInput {
+  some: ProductionProductItemWhereInput
+  every: ProductionProductItemWhereInput
+  none: ProductionProductItemWhereInput
+}
+
+extend type ProductionProduct {
+  productionProductItems(
+    where: ProductionProductItemWhereInput
+    orderBy: ProductionProductItemOrderByInput
+    skip: Int
+    take: Int
+  ): ProductionProductItems
+}
+
+extend input ProductionProductWhereInput {
+  productionProductItems: ProductionProductItemRelationInput
+}
+
+extend input ProductionProductCreateInput {
+  productionProductItems: ProductionProductItemsConnection
+}
+
+extend type ProjectBriefer {
+  productionProductItems(
+    where: ProductionProductItemWhereInput
+    orderBy: ProductionProductItemOrderByInput
+    skip: Int
+    take: Int
+  ): ProductionProductItems
+}
+
+extend input ProjectBrieferWhereInput {
+  productionProductItems: ProductionProductItemRelationInput
+}
+
+extend input ProjectBrieferCreateInput {
+  productionProductItems: ProductionProductItemsConnection
+}
+
+extend type ProjectManuscripter {
+  productionProductItems(
+    where: ProductionProductItemWhereInput
+    orderBy: ProductionProductItemOrderByInput
+    skip: Int
+    take: Int
+  ): ProductionProductItems
+}
+
+extend input ProjectManuscripterWhereInput {
+  productionProductItems: ProductionProductItemRelationInput
+}
+
+extend input ProjectManuscripterCreateInput {
+  productionProductItems: ProductionProductItemsConnection
+}
+
+extend type ProjectTranslator {
+  productionProductItems(
+    where: ProductionProductItemWhereInput
+    orderBy: ProductionProductItemOrderByInput
+    skip: Int
+    take: Int
+  ): ProductionProductItems
+}
+
+extend input ProjectTranslatorWhereInput {
+  productionProductItems: ProductionProductItemRelationInput
+}
+
+extend input ProjectTranslatorCreateInput {
+  productionProductItems: ProductionProductItemsConnection
+}
+
+extend type ProjectVoiceoverer {
+  productionProductItems(
+    where: ProductionProductItemWhereInput
+    orderBy: ProductionProductItemOrderByInput
+    skip: Int
+    take: Int
+  ): ProductionProductItems
+}
+
+extend input ProjectVoiceovererWhereInput {
+  productionProductItems: ProductionProductItemRelationInput
+}
+
+extend input ProjectVoiceovererCreateInput {
+  productionProductItems: ProductionProductItemsConnection
+}
+
+extend type ProjectStoryboarder {
+  productionProductItems(
+    where: ProductionProductItemWhereInput
+    orderBy: ProductionProductItemOrderByInput
+    skip: Int
+    take: Int
+  ): ProductionProductItems
+}
+
+extend input ProjectStoryboarderWhereInput {
+  productionProductItems: ProductionProductItemRelationInput
+}
+
+extend input ProjectStoryboarderCreateInput {
+  productionProductItems: ProductionProductItemsConnection
+}
+
+extend type ProjectIllustrator {
+  productionProductItems(
+    where: ProductionProductItemWhereInput
+    orderBy: ProductionProductItemOrderByInput
+    skip: Int
+    take: Int
+  ): ProductionProductItems
+}
+
+extend input ProjectIllustratorWhereInput {
+  productionProductItems: ProductionProductItemRelationInput
+}
+
+extend input ProjectIllustratorCreateInput {
+  productionProductItems: ProductionProductItemsConnection
+}
+
+extend type ProjectAnimator {
+  productionProductItems(
+    where: ProductionProductItemWhereInput
+    orderBy: ProductionProductItemOrderByInput
+    skip: Int
+    take: Int
+  ): ProductionProductItems
+}
+
+extend input ProjectAnimatorWhereInput {
+  productionProductItems: ProductionProductItemRelationInput
+}
+
+extend input ProjectAnimatorCreateInput {
+  productionProductItems: ProductionProductItemsConnection
+}
+
+extend input ProjectAnimatorUpdateInput {
+  productionProductItems: ProductionProductItemsConnection
+}
+
+input ProductionProductItemCreateInput {
+  title: String!
+  forAll: Boolean
+
+  productionProductId: ID
+
+  isBrief: Boolean
+  isManuscript: Boolean
+  isTranslation: Boolean
+  isVoiceover: Boolean
+  isStoryboard: Boolean
+  isIllustration: Boolean
+  isAnimation: Boolean
+
+  brieferId: ID
+  manuscripterId: ID
+  translatorId: ID
+  voiceovererId: ID
+  storyboarderId: ID
+  illustratorId: ID
+  animatorId: ID
+}
+
+input ProductionProductItemUpdateInput {
+  title: String
+  forAll: Boolean
+
+  isBrief: Boolean
+  isManuscript: Boolean
+  isTranslation: Boolean
+  isVoiceover: Boolean
+  isStoryboard: Boolean
+  isIllustration: Boolean
+  isAnimation: Boolean
+}
+
+input ProductionProductItemWhereInput {
+  id: StringFilter
+  title: StringFilter
+  forAll: BoolFilter
+
+  productionProduct: ProductionProductWhereInput
+  productionProductId: StringFilter
+
+  briefer: ProjectBrieferWhereInput
+  brieferId: StringFilter
+
+  manuscripter: ProjectManuscripterWhereInput
+  manuscripterId: StringFilter
+
+  translator: ProjectTranslatorWhereInput
+  translatorId: StringFilter
+
+  voiceoverer: ProjectVoiceovererWhereInput
+  voiceovererId: StringFilter
+
+  storyboarder: ProjectStoryboarderWhereInput
+  storyboarderId: StringFilter
+
+  illustrator: ProjectIllustratorWhereInput
+  illustratorId: StringFilter
+
+  animator: ProjectAnimatorWhereInput
+  animatorId: StringFilter
+
+  isBrief: BoolFilter
+  isManuscript: BoolFilter
+  isTranslation: BoolFilter
+  isVoiceover: BoolFilter
+  isStoryboard: BoolFilter
+  isIllustration: BoolFilter
+  isAnimation: BoolFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+
+  AND: [ProductionProductItemWhereInput!]
+  OR: [ProductionProductItemWhereInput!]
+  NOT: [ProductionProductItemWhereInput!]
+}
+
+input ProductionProductItemOrderByInput {
+  id: SortType
+  title: SortType
+  forAll: SortType
+
+  productionProduct: ProductionProductOrderByInput
+  productionProductId: SortType
+
+  briefer: ProjectBrieferOrderByInput
+  brieferId: SortType
+
+  manuscripter: ProjectManuscripterOrderByInput
+  manuscripterId: SortType
+
+  translator: ProjectTranslatorOrderByInput
+  translatorId: SortType
+
+  voiceoverer: ProjectVoiceovererOrderByInput
+  voiceovererId: SortType
+
+  storyboarder: ProjectStoryboarderOrderByInput
+  storyboarderId: SortType
+
+  illustrator: ProjectIllustratorOrderByInput
+  illustratorId: SortType
+
+  animator: ProjectAnimatorOrderByInput
+  animatorId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input ProductionProductItemsConnection {
+  create: [ProductionProductItemCreateInput!]
+  connect: [ProductionProductItemUniqueInput!]
+}
+
+input ProductionProductItemConnection {
+  create: ProductionProductItemCreateInput
+  connect: ProductionProductItemUniqueInput
+}

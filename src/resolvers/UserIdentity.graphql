@@ -1,0 +1,9 @@
+extend type Query {
+  forgotPassword(email: String!): Boolean
+}
+
+extend type Mutation {
+  createUserIdentity(password: String!, token: String!): User
+  resetPassword(password: String!, token: String!): User
+  acceptInvite(password: String!, token: String!, data: UserUpdateInput): User
+}

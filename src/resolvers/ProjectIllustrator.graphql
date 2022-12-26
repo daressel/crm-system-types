@@ -1,0 +1,107 @@
+input ProjectIllustratorUniqueInput {
+  id: ID
+  projectMemberId: ID
+}
+
+extend type Query {
+  projectIllustrator(where: ProjectIllustratorUniqueInput!): ProjectIllustrator
+  projectIllustrators(
+    where: ProjectIllustratorWhereInput
+    orderBy: ProjectIllustratorOrderByInput
+    take: Int
+    skip: Int
+  ): ProjectIllustrators
+}
+
+extend type Mutation {
+  createProjectIllustrators(
+    where: UniqueInput
+    data: ProjectIllustratorsConnectOrCreate
+  ): ProductionProductItem
+  updateProjectIllustrators(
+    where: ProjectIllustratorWhereInput
+    data: ProjectIllustratorUpdateInput!
+  ): BatchPayload
+  deleteProjectIllustrators(where: ProjectIllustratorWhereInput): BatchPayload
+}
+
+type ProjectIllustrator {
+  id: String
+
+  projectMember: ProjectMember
+  projectMemberId: ID
+
+  status: ProjectUserStatus
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type ProjectIllustrators {
+  projectIllustrators: [ProjectIllustrator!]
+  count(where: ProjectIllustratorWhereInput): Int
+}
+
+input ProjectIllustratorRelation {
+  some: ProjectIllustratorWhereInput
+  every: ProjectIllustratorWhereInput
+  none: ProjectIllustratorWhereInput
+}
+
+extend type ProjectMember {
+  projectIllustrator: ProjectIllustrator
+}
+
+extend input ProjectMemberWhereInput {
+  projectIllustrator: ProjectIllustratorRelation
+}
+
+input ProjectIllustratorWhereInput {
+  id: StringFilter
+
+  projectMember: ProjectMemberWhereInput
+  projectMemberId: StringFilter
+
+  status: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+  deletedAt: StringFilter
+}
+
+input ProjectIllustratorOrderByInput {
+  id: SortType
+
+  projectMember: ProjectMemberOrderByInput
+  projectMemberId: SortType
+
+  status: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+  deletedAt: SortType
+}
+
+input ProjectIllustratorCreateInput {
+  projectMember: ProjectMemberConnection
+}
+
+input ProjectIllustratorUpdateInput {
+  deletedAt: Date
+  status: ProjectUserStatus
+}
+
+#//!! I think, that need only create for projectIllustrators and etc
+input ProjectIllustratorConnection {
+  create: ProjectIllustratorCreateInput!
+}
+
+input ProjectIllustratorsConnectOrCreate {
+  connectOrCreate: [ProjectIllustratorsConnectOrCreateInput]
+}
+
+input ProjectIllustratorsConnectOrCreateInput {
+  create: ProjectIllustratorCreateInput!
+  where: ProjectIllustratorUniqueInput
+}

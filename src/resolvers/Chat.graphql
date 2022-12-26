@@ -1,0 +1,119 @@
+enum ChatType {
+  INVITE_PROJECT_MEMBER
+}
+extend type Query {
+  chat(where: UniqueInput!): Chat
+  chats(
+    where: ChatWhereInput
+    orderBy: ChatOrderByInput
+    take: Int
+    skip: Int
+  ): Chats
+}
+
+extend type Mutation {
+  createChat(data: ChatCreateInput!): Chat
+  updateChat(where: UniqueInput!, data: ChatUpdateInput!): Chat
+  deleteChat(where: UniqueInput!): Chat
+  deleteUserFromChat(data: DeleteUserFromChatInput): String
+}
+
+type Chat {
+  id: String
+  title: String
+  type: ChatType
+
+  studio: Studio
+  studioId: ID
+
+  createdAt: Date
+  updatedAt: Date
+
+  members: Users
+  messages: Messages
+
+  createdBy: User
+  userId: ID
+}
+
+type Chats {
+  chats: [Chat!]
+  count(where: ChatWhereInput): Int
+}
+
+extend type Studio {
+  chats(
+    where: ChatWhereInput
+    orderBy: ChatOrderByInput
+    take: Int
+    skip: Int
+  ): Chats
+}
+
+extend input StudioWhereInput {
+  chats: ChatRelationInput
+}
+
+extend type User {
+  chats(
+    where: ChatWhereInput
+    orderBy: ChatOrderByInput
+    take: Int
+    skip: Int
+  ): Chats
+}
+
+extend input UserWhereInput {
+  chats: ChatRelationInput
+}
+
+input ChatRelationInput {
+  some: ChatWhereInput
+  every: ChatWhereInput
+  none: ChatWhereInput
+}
+
+input ChatWhereInput {
+  id: StringFilter
+  title: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+}
+
+input ChatOrderByInput {
+  id: SortType
+  title: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input ChatCreateInput {
+  title: String!
+  type: ChatType!
+  members: UserChatConnection
+  studioId: String
+  userId: String
+}
+
+input ChatUpdateInput {
+  title: String
+  members: UserChatConnection
+}
+
+input ChatConnection {
+  connect: UniqueInput
+  connectOrCreate: ChatConnectOrCreateInput
+  create: ChatCreateInput
+}
+
+input ChatConnectOrCreateInput {
+  where: UniqueInput!
+  create: ChatCreateInput!
+}
+
+input DeleteUserFromChatInput {
+  userId: String
+  chatId: String
+}

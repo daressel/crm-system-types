@@ -1,0 +1,113 @@
+extend type Query {
+  message(where: UniqueInput!): Message
+  messages(
+    where: MessageWhereInput
+    orderBy: MessageOrderByInput
+    take: Int
+    skip: Int
+  ): Messages
+}
+
+extend type Mutation {
+  createMessage(data: MessageCreateInput!): Message
+  updateMessage(where: UniqueInput!, data: MessageUpdateInput!): Message
+  deleteMessage(where: UniqueInput!): Message
+}
+
+extend type Subscription {
+  message: Message
+}
+
+type Message {
+  id: String
+
+  chat: Chat
+  chatId: String
+
+  message: String
+
+  createdBy: User
+  userId: String
+
+  parentMessageId: String
+  parentMessage: Message
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Messages {
+  messages: [Message!]
+  count(where: MessageWhereInput): Int
+}
+
+type Parent {
+  parentMessage: Message
+}
+
+extend type User {
+  messages(
+    where: MessageWhereInput
+    orderBy: MessageOrderByInput
+    take: Int
+    skip: Int
+  ): Messages
+}
+
+extend input UserWhereInput {
+  messages: MessageRelationInput
+}
+
+extend type Chat {
+  messages: Messages
+}
+
+extend input ChatWhereInput {
+  chats: MessageRelationInput
+}
+
+input MessageRelationInput {
+  some: ChatWhereInput
+  every: ChatWhereInput
+  none: ChatWhereInput
+}
+
+input MessageWhereInput {
+  id: StringFilter
+  message: StringFilter
+
+  chatId: String
+  userId: String
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+}
+
+input MessageOrderByInput {
+  id: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input MessageCreateInput {
+  message: String!
+  chat: ChatConnection
+  createdBy: UserConnection
+  parentMessage: MessageConnection
+}
+
+input MessageUpdateInput {
+  message: String
+}
+
+input MessageConnection {
+  connect: UniqueInput
+  connectOrCreate: MessageConnectOrCreateInput
+  create: MessageCreateInput
+}
+
+input MessageConnectOrCreateInput {
+  where: UniqueInput!
+  create: MessageCreateInput!
+}

@@ -1,0 +1,107 @@
+input ProjectTranslatorUniqueInput {
+  id: ID
+  projectMemberId: ID
+}
+
+extend type Query {
+  projectTranslator(where: ProjectTranslatorUniqueInput!): ProjectTranslator
+  projectTranslators(
+    where: ProjectTranslatorWhereInput
+    orderBy: ProjectTranslatorOrderByInput
+    take: Int
+    skip: Int
+  ): ProjectTranslators
+}
+
+extend type Mutation {
+  createProjectTranslators(
+    where: UniqueInput
+    data: ProjectTranslatorsConnectOrCreate
+  ): ProductionProductItem
+  updateProjectTranslators(
+    where: ProjectTranslatorWhereInput
+    data: ProjectTranslatorUpdateInput!
+  ): BatchPayload
+  deleteProjectTranslators(where: ProjectTranslatorWhereInput): BatchPayload
+}
+
+type ProjectTranslator {
+  id: String
+
+  projectMember: ProjectMember
+  projectMemberId: ID
+
+  status: ProjectUserStatus
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type ProjectTranslators {
+  projectTranslators: [ProjectTranslator!]
+  count(where: ProjectTranslatorWhereInput): Int
+}
+
+input ProjectTranslatorRelation {
+  some: ProjectTranslatorWhereInput
+  every: ProjectTranslatorWhereInput
+  none: ProjectTranslatorWhereInput
+}
+
+extend type ProjectMember {
+  projectTranslator: ProjectTranslator
+}
+
+extend input ProjectMemberWhereInput {
+  projectTranslator: ProjectTranslatorRelation
+}
+
+input ProjectTranslatorWhereInput {
+  id: StringFilter
+
+  projectMember: ProjectMemberWhereInput
+  projectMemberId: StringFilter
+
+  status: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+  deletedAt: StringFilter
+}
+
+input ProjectTranslatorOrderByInput {
+  id: SortType
+
+  projectMember: ProjectMemberOrderByInput
+  projectMemberId: SortType
+
+  status: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+  deletedAt: SortType
+}
+
+input ProjectTranslatorCreateInput {
+  projectMember: ProjectMemberConnection
+}
+
+input ProjectTranslatorUpdateInput {
+  deletedAt: Date
+  status: ProjectUserStatus
+}
+
+#//!! I think, that need only create for projectTranslators and etc
+input ProjectTranslatorConnection {
+  create: ProjectTranslatorCreateInput!
+}
+
+input ProjectTranslatorsConnectOrCreate {
+  connectOrCreate: [ProjectTranslatorsConnectOrCreateInput]
+}
+
+input ProjectTranslatorsConnectOrCreateInput {
+  create: ProjectTranslatorCreateInput!
+  where: ProjectTranslatorUniqueInput
+}

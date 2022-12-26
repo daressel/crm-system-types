@@ -1,0 +1,105 @@
+extend type Query {
+  studio: Studio
+  studios(
+    where: StudioWhereInput
+    orderBy: StudioOrderByInput
+    take: Int
+    skip: Int
+  ): Studios
+}
+
+extend type Mutation {
+  createStudio(data: StudioCreateInput!): Studio
+  updateStudio(data: StudioUpdateInput!): Studio
+  deleteStudio: Studio
+}
+
+type Studio {
+  id: ID
+  title: String
+  code: String
+  country: String
+  website: String
+  address: String
+  preference: String
+
+  createdBy: User
+  createdByUserId: ID
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Studios {
+  studios: [Studio!]
+  count(where: StudioWhereInput): Int
+}
+
+input StudioRelationInput {
+  some: StudioMemberWhereInput
+  every: StudioMemberWhereInput
+  none: StudioMemberWhereInput
+}
+
+extend type User {
+  createdStudios(
+    where: StudioWhereInput
+    orderBy: StudioOrderByInput
+    take: Int
+    skip: Int
+  ): Studios
+}
+
+extend input UserWhereInput {
+  createdStudios: StudioRelationInput
+}
+
+input StudioWhereInput {
+  title: StringFilter
+  code: StringFilter
+  country: StringFilter
+  website: StringFilter
+  address: StringFilter
+  preference: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+
+  AND: [StudioWhereInput!]
+  OR: [StudioWhereInput!]
+  NOT: [StudioWhereInput!]
+}
+
+input StudioOrderByInput {
+  title: SortType
+  code: SortType
+  country: SortType
+  website: SortType
+  address: SortType
+  preference: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input StudioCreateInput {
+  title: String!
+  code: String
+  country: String
+  website: String
+  address: String
+  preference: String
+}
+
+input StudioUpdateInput {
+  title: String
+  code: String
+  country: String
+  website: String
+  address: String
+  preference: String
+}
+
+input StudioConnection {
+  connect: UniqueInput!
+}

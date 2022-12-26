@@ -1,0 +1,88 @@
+input VoiceovererUniqueInput {
+  id: ID
+  studioMemberId: ID
+}
+
+extend type Query {
+  voiceoverer(where: VoiceovererUniqueInput!): Voiceoverer
+  voiceoverers(
+    where: VoiceovererWhereInput
+    orderBy: VoiceovererOrderByInput
+    take: Int
+    skip: Int
+  ): Voiceoverers
+}
+
+extend type Mutation {
+  createVoiceoverers(data: [VoiceovererCreateInput!]!): BatchPayload
+  updateVoiceoverers(
+    where: VoiceovererWhereInput
+    data: VoiceovererUpdateInput!
+  ): BatchPayload
+  deleteVoiceoverers(where: VoiceovererWhereInput): BatchPayload
+}
+
+type Voiceoverer {
+  id: String
+
+  studioMember: StudioMember
+  studioMemberId: ID
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type Voiceoverers {
+  voiceoverers: [Voiceoverer!]
+  count(where: VoiceovererWhereInput): Int
+}
+
+input VoiceovererRelation {
+  some: VoiceovererWhereInput
+  every: VoiceovererWhereInput
+  none: VoiceovererWhereInput
+}
+
+extend type StudioMember {
+  voiceoverer: Voiceoverer
+}
+
+extend input StudioMemberCreateInput {
+  voiceoverer: VoiceovererConnection
+}
+
+input VoiceovererWhereInput {
+  id: StringFilter
+
+  studioMember: StudioMemberWhereInput
+  studioMemberId: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+  deletedAt: StringFilter
+}
+
+input VoiceovererOrderByInput {
+  id: SortType
+
+  studioMember: StudioMemberOrderByInput
+  studioMemberId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+  deletedAt: SortType
+}
+
+input VoiceovererCreateInput {
+  studioMemberId: ID
+}
+
+input VoiceovererUpdateInput {
+  deletedAt: Date
+}
+
+#//!! I think, that need only create for voiceoverers and etc
+input VoiceovererConnection {
+  create: VoiceovererCreateInput!
+}

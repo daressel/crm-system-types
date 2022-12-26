@@ -1,0 +1,154 @@
+enum ClientRole {
+  VIEWER
+  SIGNOR
+}
+
+input ClientRoleFilter {
+  equals: ClientRole
+  in: [ClientRole!]
+  not: ClientRole
+  notIn: [ClientRole!]
+}
+
+extend type Query {
+  client(where: UniqueInput!): Client
+  clients(
+    where: ClientWhereInput
+    orderBy: ClientOrderByInput
+    take: Int
+    skip: Int
+  ): Clients
+
+  isExistClient(where: ClientWhereInput): Boolean
+}
+
+extend type Mutation {
+  createClients(data: [ClientCreateInput!]): Studio
+  updateClients(where: ClientWhereInput, data: ClientUpdateInput!): BatchPayload
+  checkClients(token: String!): Token
+  inviteClients(data: InviteClientsInput): String
+  deleteClients(where: ClientWhereInput): BatchPayload
+}
+
+type Client {
+  id: ID
+
+  user: User
+  userId: ID
+
+  studio: Studio
+  studioId: ID
+
+  role: ClientRole
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+input InviteClientsInput {
+  inviteClients: [InviteClient!]!
+  senderFirstName: String!
+  senderLastName: String!
+  studioRole: StudioRole!
+  studioTitle: String!
+}
+
+input InviteClient {
+  recipientFirstName: String!
+  recipientLastName: String!
+  email: String!
+}
+
+type Clients {
+  clients: [Client!]
+  count(where: ClientWhereInput): Int
+}
+
+input ClientRelationInput {
+  some: ClientWhereInput
+  every: ClientWhereInput
+  none: ClientWhereInput
+}
+
+extend type Studio {
+  clients(
+    where: ClientWhereInput
+    orderBy: ClientOrderByInput
+    take: Int
+    skip: Int
+  ): Clients
+}
+
+extend input StudioWhereInput {
+  clients: ClientRelationInput
+}
+
+extend type User {
+  clients(
+    where: ClientWhereInput
+    orderBy: ClientOrderByInput
+    take: Int
+    skip: Int
+  ): Clients
+}
+
+extend input UserWhereInput {
+  clients: ClientRelationInput
+}
+
+input ClientWhereInput {
+  id: StringFilter
+
+  role: ClientRoleFilter
+
+  user: UserWhereInput
+  userId: StringFilter
+
+  studio: StudioWhereInput
+  studioId: StringFilter
+
+  AND: [ClientWhereInput!]
+  OR: [ClientWhereInput!]
+  NOT: [ClientWhereInput!]
+}
+
+input ClientOrderByInput {
+  role: SortType
+
+  user: UserOrderByInput
+  userId: SortType
+
+  studio: StudioOrderByInput
+  studioId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input ClientCreateInput {
+  user: UserConnection!
+  role: ClientRole!
+  studio: StudioConnection
+}
+
+input ClientUpdateInput {
+  role: ClientRole
+  status: MemberStatus
+}
+
+input ClientsConnection {
+  create: [ClientCreateInput!]
+  connect: [UniqueInput!]
+  connectOrCreate: [ClientConnectOrCreateInput!]
+}
+
+input ClientConnection {
+  create: ClientCreateInput
+  connect: UniqueInput
+  connectOrCreate: ClientConnectOrCreateInput
+}
+
+input ClientConnectOrCreateInput {
+  create: ClientCreateInput!
+  where: UniqueInput!
+}

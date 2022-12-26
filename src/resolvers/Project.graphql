@@ -1,0 +1,169 @@
+enum ProjectStatus {
+  DRAFT
+  WORKING
+  COMPLETED
+  CANCELED
+}
+
+input ProjectUniqueInput {
+  id: ID
+  title_studioId: ProjectUniqueFields
+}
+
+input ProjectUniqueFields {
+  studioId: ID
+  title: String
+}
+
+extend type Query {
+  project(where: ProjectUniqueInput!): Project
+  projects(
+    where: ProjectWhereInput
+    orderBy: ProjectOrderByInput
+    take: Int
+    skip: Int
+  ): Projects
+
+  isExistProject(where: ProjectWhereInput): Boolean
+}
+
+extend type Mutation {
+  createProject(data: ProjectCreateInput!): Project
+  updateProject(where: ProjectUniqueInput!, data: ProjectUpdateInput): Project
+  deleteProject(where: ProjectUniqueInput!): Project
+
+  sendProjectProposal(where: ProjectUniqueInput!): Boolean
+}
+
+type Project {
+  id: ID
+  title: String
+  status: ProjectStatus
+
+  studio: Studio
+  studioId: ID
+
+  projectClients(
+    where: ProjectClientWhereInput
+    orderBy: ProjectClientOrderByInput
+    take: Int
+    skip: Int
+  ): ProjectClients
+
+  organization: Organization
+  organizationId: String
+
+  emailTemplate: EmailTemplate
+  emailTemplateId: String
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Projects {
+  projects: [Project!]
+  count(where: ProjectWhereInput): Int
+}
+
+input ProjectRelationInput {
+  some: ProjectWhereInput
+  every: ProjectWhereInput
+  none: ProjectWhereInput
+}
+
+extend type Studio {
+  projects(
+    where: ProjectWhereInput
+    orderBy: ProjectOrderByInput
+    take: Int
+    skip: Int
+  ): Projects
+}
+
+extend input StudioWhereInput {
+  projects: ProjectRelationInput
+}
+
+extend type Organization {
+  projects(
+    where: ProjectWhereInput
+    orderBy: ProjectOrderByInput
+    take: Int
+    skip: Int
+  ): Projects
+}
+
+extend input OrganizationWhereInput {
+  projects: ProjectRelationInput
+}
+
+extend type EmailTemplate {
+  projects(
+    where: ProjectWhereInput
+    orderBy: ProjectOrderByInput
+    take: Int
+    skip: Int
+  ): Projects
+}
+
+extend input EmailTemplateWhereInput {
+  projects: ProjectRelationInput
+}
+
+extend type ProjectClient {
+  projects(
+    where: ProjectWhereInput
+    orderBy: ProjectOrderByInput
+    take: Int
+    skip: Int
+  ): Projects
+}
+
+extend input ProjectClientWhereInput {
+  projects: ProjectRelationInput
+}
+
+input ProjectWhereInput {
+  id: StringFilter
+  title: StringFilter
+
+  status: ProjectStatusFilter
+
+  studio: StudioWhereInput
+  studioId: StringFilter
+
+  projectClients: ClientRelationInput
+
+  emailTemplate: EmailTemplateWhereInput
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+}
+
+input ProjectOrderByInput {
+  id: SortType
+  title: SortType
+
+  studio: StudioOrderByInput
+  studioId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input ProjectCreateInput {
+  title: String
+  status: ProjectStatus
+}
+
+input ProjectUpdateInput {
+  title: String
+  status: ProjectStatus
+  projectClients: ClientsConnection
+  organization: OrganizationConnection
+  emailTemplate: EmailTemplateConnection
+}
+
+input ProjectConnection {
+  connect: ProjectUniqueInput
+}

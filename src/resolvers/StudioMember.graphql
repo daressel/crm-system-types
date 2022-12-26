@@ -1,0 +1,184 @@
+enum StudioRole {
+  OWNER
+  ADMIN
+  PROJECT_MANAGER
+
+  CREATOR
+}
+
+input StudioRoleFilter {
+  equals: StudioRole
+  in: [StudioRole!]
+  not: StudioRole
+  notIn: [StudioRole!]
+}
+
+extend type Query {
+  studioMember(where: UniqueInput!): StudioMember
+  studioMembers(
+    where: StudioMemberWhereInput
+    orderBy: StudioMemberOrderByInput
+    take: Int
+    skip: Int
+  ): StudioMembers
+}
+
+extend type Mutation {
+  createStudioMembers(data: [StudioMemberCreateInput!]!): BatchPayload
+  updateStudioMembers(
+    where: StudioMemberWhereInput
+    data: StudioMemberUpdateInput!
+  ): BatchPayload
+  checkStudioMembers(token: String!): Token
+  inviteMembers(data: InviteMembersInput): String
+  deleteStudioMembers(where: StudioMemberWhereInput): BatchPayload
+}
+
+type StudioMember {
+  id: ID
+
+  user: User
+  userId: ID
+
+  studio: Studio
+  studioId: ID
+
+  role: StudioRole
+  status: MemberStatus
+
+  invitedByUserId: ID
+  invitedByUser: User
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type StudioMembers {
+  studioMembers: [StudioMember!]
+  count(where: StudioMemberWhereInput): Int
+}
+
+input InviteMembersInput {
+  inviteMembers: [InviteMember!]!
+  senderFirstName: String!
+  senderLastName: String!
+  studioRole: StudioRole!
+  studioTitle: String!
+}
+
+input InviteMember {
+  recipientFirstName: String!
+  recipientLastName: String!
+  email: String!
+}
+
+input StudioMemberRelationInput {
+  some: StudioMemberWhereInput
+  every: StudioMemberWhereInput
+  none: StudioMemberWhereInput
+}
+
+extend type Studio {
+  members(
+    where: StudioMemberWhereInput
+    orderBy: StudioMemberOrderByInput
+    take: Int
+    skip: Int
+  ): StudioMembers
+}
+
+extend input StudioWhereInput {
+  members: StudioMemberRelationInput
+}
+
+extend type User {
+  studioMembers(
+    where: StudioMemberWhereInput
+    orderBy: StudioMemberOrderByInput
+    take: Int
+    skip: Int
+  ): StudioMembers
+}
+
+extend input UserWhereInput {
+  studioMembers: StudioMemberRelationInput
+}
+
+input StudioMemberWhereInput {
+  role: StudioRoleFilter
+
+  user: UserWhereInput
+  userId: StringFilter
+
+  studio: StudioWhereInput
+  studioId: StringFilter
+
+  invitedByUser: UserWhereInput
+  invitedByUserId: StringFilter
+
+  status: MemberStatusFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+
+  AND: [StudioMemberWhereInput!]
+  OR: [StudioMemberWhereInput!]
+  NOT: [StudioMemberWhereInput!]
+}
+
+input StudioMemberOrderByInput {
+  role: SortType
+
+  user: UserOrderByInput
+  userId: SortType
+
+  studio: StudioOrderByInput
+  studioId: SortType
+
+  invitedByUser: UserOrderByInput
+  invitedByUserId: SortType
+
+  status: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input StudioMemberCreateInput {
+  user: UserConnection!
+  role: StudioRole!
+  status: MemberStatus
+  languages: [Language!]
+
+  animator: AnimatorConnection
+  briefer: BrieferConnection
+  illustrator: IllustratorConnection
+  manuscripter: ManuscripterConnection
+  storyboarder: StoryboarderConnection
+  translator: TranslatorConnection
+  voiceoverer: VoiceovererConnection
+}
+
+input StudioMemberUpdateInput {
+  role: StudioRole
+  status: MemberStatus
+  languages: [Language!]
+}
+
+input StudioMembersConnection {
+  create: [StudioMemberCreateInput!]
+  connect: [UniqueInput!]
+  connectOrCreate: [StudioMemberConnectOrCreateInput!]
+}
+
+input StudioMemberConnectOrCreateInput {
+  create: StudioMemberCreateInput!
+  where: UniqueInput
+}
+
+input StudioMemberConnection {
+  create: StudioMemberCreateInput
+  connect: UniqueInput
+  connectOrCreate: StudioMemberConnectOrCreateInput
+}

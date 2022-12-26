@@ -1,0 +1,139 @@
+extend type Query {
+  organizationClient(where: UniqueInput!): OrganizationClient
+  organizationClients(
+    where: OrganizationClientWhereInput
+    orderBy: OrganizationClientOrderByInput
+    take: Int
+    skip: Int
+  ): OrganizationClients
+}
+
+extend type Mutation {
+  createOrganizationClients(data: OrganizationClientsCreateInput!): Organization
+  updateOrganizationClients(
+    where: OrganizationClientWhereInput
+    data: OrganizationClientUpdateInput!
+  ): BatchPayload
+  deleteOrganizationClients(where: OrganizationClientWhereInput): BatchPayload
+}
+
+type OrganizationClient {
+  id: ID
+
+  organization: Organization
+  organizationId: ID
+
+  client: Client
+  clientId: ID
+
+  role: String
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type OrganizationClients {
+  organizationClients(
+    where: OrganizationClientWhereInput
+    orderBy: OrganizationClientOrderByInput
+    take: Int
+    skip: Int
+  ): [OrganizationClient!]
+  count(where: OrganizationClientWhereInput): Int
+}
+
+input OrganizationClientRelationInput {
+  some: OrganizationClientWhereInput
+  every: OrganizationClientWhereInput
+  none: OrganizationClientWhereInput
+}
+
+extend type Organization {
+  organizationClients(
+    where: OrganizationClientWhereInput
+    orderBy: OrganizationClientOrderByInput
+    take: Int
+    skip: Int
+  ): OrganizationClients
+}
+
+extend input OrganizationCreateInput {
+  clients: OrganizationClientsConnection
+}
+
+extend input OrganizationWhereInput {
+  clients: OrganizationClientRelationInput
+}
+
+extend type Client {
+  organizationClients(
+    where: OrganizationClientWhereInput
+    orderBy: OrganizationClientOrderByInput
+    take: Int
+    skip: Int
+  ): OrganizationClients
+}
+
+extend input ClientCreateInput {
+  organizationClients: OrganizationClientsConnection
+}
+
+extend input ClientWhereInput {
+  organizationClients: OrganizationClientRelationInput
+}
+
+input OrganizationClientWhereInput {
+  role: StringFilter
+
+  organization: OrganizationWhereInput
+  organizationId: StringFilter
+
+  client: ClientWhereInput
+  clientId: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+
+  AND: [OrganizationClientWhereInput!]
+  OR: [OrganizationClientWhereInput!]
+  NOT: [OrganizationClientWhereInput!]
+}
+
+input OrganizationClientOrderByInput {
+  role: SortType
+
+  organization: OrganizationOrderByInput
+  organizationId: SortType
+
+  client: ClientOrderByInput
+  clientId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input OrganizationClientsCreateInput {
+  clients: OrganizationClientsConnection!
+  organizationId: ID!
+}
+
+input OrganizationClientCreateInput {
+  client: ClientConnection
+  organization: OrganizationConnection
+  role: String
+}
+
+input OrganizationClientUpdateInput {
+  role: String
+}
+
+input OrganizationClientsConnection {
+  create: [OrganizationClientCreateInput!]
+  connect: [UniqueInput!]
+  connectOrCreate: [OrganizationClientConnectOrCreateInput!]
+}
+
+input OrganizationClientConnectOrCreateInput {
+  create: OrganizationClientCreateInput!
+  where: UniqueInput
+}

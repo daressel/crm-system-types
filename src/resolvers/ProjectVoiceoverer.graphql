@@ -1,0 +1,107 @@
+input ProjectVoiceovererUniqueInput {
+  id: ID
+  projectMemberId: ID
+}
+
+extend type Query {
+  projectVoiceoverer(where: ProjectVoiceovererUniqueInput!): ProjectVoiceoverer
+  projectVoiceoverers(
+    where: ProjectVoiceovererWhereInput
+    orderBy: ProjectVoiceovererOrderByInput
+    take: Int
+    skip: Int
+  ): ProjectVoiceoverers
+}
+
+extend type Mutation {
+  createProjectVoiceoverers(
+    where: UniqueInput
+    data: ProjectVoiceoverersConnectOrCreate
+  ): ProductionProductItem
+  updateProjectVoiceoverers(
+    where: ProjectVoiceovererWhereInput
+    data: ProjectVoiceovererUpdateInput!
+  ): BatchPayload
+  deleteProjectVoiceoverers(where: ProjectVoiceovererWhereInput): BatchPayload
+}
+
+type ProjectVoiceoverer {
+  id: String
+
+  projectMember: ProjectMember
+  projectMemberId: ID
+
+  status: ProjectUserStatus
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type ProjectVoiceoverers {
+  projectVoiceoverers: [ProjectVoiceoverer!]
+  count(where: ProjectVoiceovererWhereInput): Int
+}
+
+input ProjectVoiceovererRelation {
+  some: ProjectVoiceovererWhereInput
+  every: ProjectVoiceovererWhereInput
+  none: ProjectVoiceovererWhereInput
+}
+
+extend type ProjectMember {
+  projectVoiceoverer: ProjectVoiceoverer
+}
+
+extend input ProjectMemberWhereInput {
+  projectVoiceoverer: ProjectVoiceovererRelation
+}
+
+input ProjectVoiceovererWhereInput {
+  id: StringFilter
+
+  projectMember: ProjectMemberWhereInput
+  projectMemberId: StringFilter
+
+  status: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+  deletedAt: StringFilter
+}
+
+input ProjectVoiceovererOrderByInput {
+  id: SortType
+
+  projectMember: ProjectMemberOrderByInput
+  projectMemberId: SortType
+
+  status: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+  deletedAt: SortType
+}
+
+input ProjectVoiceovererCreateInput {
+  projectMember: ProjectMemberConnection
+}
+
+input ProjectVoiceovererUpdateInput {
+  deletedAt: Date
+  status: ProjectUserStatus
+}
+
+#//!! I think, that need only create for projectVoiceoverers and etc
+input ProjectVoiceovererConnection {
+  create: ProjectVoiceovererCreateInput!
+}
+
+input ProjectVoiceoverersConnectOrCreate {
+  connectOrCreate: [ProjectVoiceoverersConnectOrCreateInput]
+}
+
+input ProjectVoiceoverersConnectOrCreateInput {
+  create: ProjectVoiceovererCreateInput!
+  where: ProjectVoiceovererUniqueInput
+}

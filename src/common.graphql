@@ -3,17 +3,102 @@ enum SortType {
   desc
 }
 
-scalar Name
-scalar Price
+enum MemberStatus {
+  SEND_INVITE
+  DEACTIVATED
+  ACTIVE
+}
+
+input MemberStatusFilter {
+  equals: MemberStatus
+  in: [MemberStatus!]
+  not: MemberStatus
+  notIn: [MemberStatus!]
+}
+
+input ProjectClientStatusFilter {
+  equals: ProjectClientStatus
+  in: [ProjectClientStatus!]
+  not: ProjectClientStatus
+  notIn: [ProjectClientStatus!]
+}
+
+input ProjectStatusFilter {
+  equals: ProjectStatus
+  in: [ProjectStatus!]
+  not: ProjectStatus
+  notIn: [ProjectStatus!]
+}
+
+enum Language {
+  EN
+  AR
+  DE
+  AL
+  CZ
+  CH
+  HU
+  GR
+  NO
+  CN
+  BG
+  KH
+  PT
+  RO
+  KR
+  SE
+  TH
+  PL
+  FR
+  ES
+  IT
+  RU
+  TR
+  JP
+  NL
+  HR
+  DK
+  IL
+  VN
+}
+
+enum StageStatus {
+  COMPLETED
+  WORKING
+  NOT_STARTED
+}
+
 scalar Date
-scalar Email
+
+input DateFilter {
+  equals: Date
+  in: [Date!]
+  notIn: [Date!]
+  lt: Date
+  lte: Date
+  gt: Date
+  gte: Date
+  not: Date
+}
+
+type Token {
+  token: String!
+}
 
 type Query {
-  empty: String
+  undefined: String
 }
 
 type Mutation {
-  empty: String
+  undefined: String
+}
+
+type Subscription {
+  undefined: String
+}
+
+input UniqueInput {
+  id: ID!
 }
 
 input StringFilter {
@@ -46,14 +131,28 @@ input IntFilter {
   not: Int
 }
 
+input LanguageFilter {
+  equals: [Language!]
+  has: Language
+  hasEvery: [Language!]
+  hasSome: [Language!]
+  isEmpty: Boolean
+}
+
 type BatchPayload {
   count: Int!
 }
 
-input UniqueInput {
-  id: ID!
+input StageStatusFilter {
+  equals: StageStatus
+  in: [StageStatus!]
+  not: StageStatus
+  notIn: [StageStatus!]
 }
 
-type Token {
-  token: String!
+enum ProjectUserStatus {
+  SEND_INVITE
+  DEACTIVATED
+  ACTIVE
+  DRAFT
 }

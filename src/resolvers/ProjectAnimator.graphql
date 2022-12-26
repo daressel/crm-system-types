@@ -1,0 +1,108 @@
+input ProjectAnimatorUniqueInput {
+  id: ID
+  projectMemberId: ID
+}
+
+extend type Query {
+  projectAnimator(where: ProjectAnimatorUniqueInput!): ProjectAnimator
+  projectAnimators(
+    where: ProjectAnimatorWhereInput
+    orderBy: ProjectAnimatorOrderByInput
+    take: Int
+    skip: Int
+  ): ProjectAnimators
+}
+
+extend type Mutation {
+  createProjectAnimators(
+    where: UniqueInput
+    data: ProjectAnimatorsConnectOrCreate
+  ): ProductionProductItem
+  updateProjectAnimators(
+    where: ProjectAnimatorWhereInput
+    data: ProjectAnimatorUpdateInput!
+  ): BatchPayload
+
+  deleteProjectAnimators(where: ProjectAnimatorWhereInput): BatchPayload
+}
+
+type ProjectAnimator {
+  id: String
+
+  projectMember: ProjectMember
+  projectMemberId: ID
+
+  status: ProjectUserStatus
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type ProjectAnimators {
+  projectAnimators: [ProjectAnimator!]
+  count(where: ProjectAnimatorWhereInput): Int
+}
+
+input ProjectAnimatorRelation {
+  some: ProjectAnimatorWhereInput
+  every: ProjectAnimatorWhereInput
+  none: ProjectAnimatorWhereInput
+}
+
+extend type ProjectMember {
+  projectAnimator: ProjectAnimator
+}
+
+extend input ProjectMemberWhereInput {
+  projectAnimator: ProjectAnimatorRelation
+}
+
+input ProjectAnimatorWhereInput {
+  id: StringFilter
+
+  projectMember: ProjectMemberWhereInput
+  projectMemberId: StringFilter
+
+  status: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+  deletedAt: StringFilter
+}
+
+input ProjectAnimatorOrderByInput {
+  id: SortType
+
+  projectMember: ProjectMemberOrderByInput
+  projectMemberId: SortType
+
+  status: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+  deletedAt: SortType
+}
+
+input ProjectAnimatorCreateInput {
+  projectMember: ProjectMemberConnection
+}
+
+input ProjectAnimatorUpdateInput {
+  deletedAt: Date
+  status: ProjectUserStatus
+}
+
+#//!! I think, that need only create for projectAnimators and etc
+input ProjectAnimatorConnection {
+  create: ProjectAnimatorCreateInput
+}
+
+input ProjectAnimatorsConnectOrCreate {
+  connectOrCreate: [ProjectAnimatorsConnectOrCreateInput]
+}
+
+input ProjectAnimatorsConnectOrCreateInput {
+  create: ProjectAnimatorCreateInput!
+  where: ProjectAnimatorUniqueInput
+}

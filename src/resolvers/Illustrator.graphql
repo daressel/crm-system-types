@@ -1,0 +1,88 @@
+input IllustratorUniqueInput {
+  id: ID
+  studioMemberId: ID
+}
+
+extend type Query {
+  illustrator(where: IllustratorUniqueInput!): Illustrator
+  illustrators(
+    where: IllustratorWhereInput
+    orderBy: IllustratorOrderByInput
+    take: Int
+    skip: Int
+  ): Illustrators
+}
+
+extend type Mutation {
+  createIllustrators(data: [IllustratorCreateInput!]!): BatchPayload
+  updateIllustrators(
+    where: IllustratorWhereInput
+    data: IllustratorUpdateInput!
+  ): BatchPayload
+  deleteIllustrators(where: IllustratorWhereInput): BatchPayload
+}
+
+type Illustrator {
+  id: String
+
+  studioMember: StudioMember
+  studioMemberId: ID
+
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type Illustrators {
+  illustrators: [Illustrator!]
+  count(where: IllustratorWhereInput): Int
+}
+
+input IllustratorRelation {
+  some: IllustratorWhereInput
+  every: IllustratorWhereInput
+  none: IllustratorWhereInput
+}
+
+extend type StudioMember {
+  illustrator: Illustrator
+}
+
+extend input StudioMemberCreateInput {
+  illustrator: IllustratorConnection
+}
+
+input IllustratorWhereInput {
+  id: StringFilter
+
+  studioMember: StudioMemberWhereInput
+  studioMemberId: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+  deletedAt: StringFilter
+}
+
+input IllustratorOrderByInput {
+  id: SortType
+
+  studioMember: StudioMemberOrderByInput
+  studioMemberId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+  deletedAt: SortType
+}
+
+input IllustratorCreateInput {
+  studioMemberId: ID
+}
+
+input IllustratorUpdateInput {
+  deletedAt: Date
+}
+
+#//!! I think, that need only create for illustrators and etc
+input IllustratorConnection {
+  create: IllustratorCreateInput!
+}

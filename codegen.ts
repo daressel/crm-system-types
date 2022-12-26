@@ -10,6 +10,9 @@ const config: CodegenConfig = {
         'typescript-resolvers',
         'typescript-document-nodes',
       ],
+      config: {
+        avoidOptionals: false,
+      },
     },
     // './graphql.schema.json': {
     //   plugins: ['introspection'],

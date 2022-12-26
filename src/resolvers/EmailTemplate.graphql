@@ -1,0 +1,100 @@
+extend type Query {
+  emailTemplate(where: UniqueInput!): EmailTemplate
+  emailTemplates(
+    where: EmailTemplateWhereInput
+    orderBy: EmailTemplateOrderByInput
+    take: Int
+    skip: Int
+  ): EmailTemplates
+}
+
+extend type Mutation {
+  createEmailTemplate(data: EmailTemplateCreateInput!): EmailTemplate
+  updateEmailTemplate(
+    where: UniqueInput!
+    data: EmailTemplateUpdateInput!
+  ): EmailTemplate
+  deleteEmailTemplate(where: UniqueInput!): EmailTemplate
+}
+
+type EmailTemplate {
+  id: String
+
+  emailSubject: String
+  emailText: String
+  title: String
+
+  studio: Studio
+  studioId: ID
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type EmailTemplates {
+  emailTemplates: [EmailTemplate!]
+  count(where: EmailTemplateWhereInput): Int
+}
+
+extend type Studio {
+  emailTemplates(
+    where: EmailTemplateWhereInput
+    orderBy: EmailTemplateOrderByInput
+    take: Int
+    skip: Int
+  ): EmailTemplates
+}
+
+extend input StudioWhereInput {
+  emailTemplates: EmailTemplateRelationInput
+}
+
+input EmailTemplateRelationInput {
+  some: EmailTemplateWhereInput
+  every: EmailTemplateWhereInput
+  none: EmailTemplateWhereInput
+}
+
+input EmailTemplateWhereInput {
+  id: StringFilter
+
+  emailSubject: StringFilter
+  title: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+}
+
+input EmailTemplateOrderByInput {
+  id: SortType
+
+  emailSubject: SortType
+  title: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input EmailTemplateCreateInput {
+  emailSubject: String!
+  emailText: String!
+  title: String!
+  projects: ProjectConnection
+}
+
+input EmailTemplateUpdateInput {
+  emailSubject: String
+  emailText: String
+  title: String
+}
+
+input EmailTemplateConnection {
+  connect: UniqueInput
+  connectOrCreate: EmailTemplateConnectOrCreateInput
+  create: EmailTemplateCreateInput
+}
+
+input EmailTemplateConnectOrCreateInput {
+  where: UniqueInput!
+  create: EmailTemplateCreateInput!
+}

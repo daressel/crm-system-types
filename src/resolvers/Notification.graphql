@@ -1,0 +1,113 @@
+extend type Query {
+  notification(where: UniqueInput!): Notification
+  notifications(
+    where: NotificationWhereInput
+    orderBy: NotificationOrderByInput
+    take: Int
+    skip: Int
+  ): Notifications
+}
+
+extend type Mutation {
+  createNotification(data: NotificationCreateInput!): Notification
+  updateNotification(
+    where: UniqueInput!
+    data: NotificationUpdateInput!
+  ): Notification
+  deleteNotification(where: UniqueInput!): Notification
+}
+
+extend type Subscription {
+  notification: Notification
+}
+
+type Notification {
+  id: ID
+  title: String
+
+  isRead: Boolean
+
+  projectId: String
+
+  studioId: String
+
+  isMember: Boolean
+  isClient: Boolean
+
+  modalName: String
+
+  invitedByUser: User
+  invitedByUserId: String
+
+  user: User
+  userId: String
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Notifications {
+  notifications: [Notification!]
+  count(where: NotificationWhereInput): Int
+}
+
+extend type User {
+  notifications(
+    where: NotificationWhereInput
+    orderBy: NotificationOrderByInput
+    take: Int
+    skip: Int
+  ): Notifications
+}
+
+extend input UserWhereInput {
+  notifications: NotificationWhereInput
+}
+
+input NotificationWhereInput {
+  id: StringFilter
+
+  isRead: BoolFilter
+
+  projectId: StringFilter
+
+  studioId: StringFilter
+
+  isMember: BoolFilter
+  isClient: BoolFilter
+
+  modalName: StringFilter
+  invitedByUserId: StringFilter
+
+  userId: StringFilter
+  title: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+}
+
+input NotificationOrderByInput {
+  title: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input NotificationCreateInput {
+  title: String!
+
+  projectId: String
+
+  studioId: String
+
+  isMember: Boolean
+  isClient: Boolean
+
+  user: UserConnection
+
+  modalName: String
+}
+
+input NotificationUpdateInput {
+  isRead: Boolean
+}

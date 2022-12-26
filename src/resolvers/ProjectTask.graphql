@@ -1,0 +1,148 @@
+enum ProjectStage {
+  BRIEF
+  MANUSCRIPT
+  STORYBOARD
+  ILLUSTRATION
+  TRANSLATION
+  VOICEOVER
+  ANIMATION
+  DELIVERY
+}
+
+extend type Query {
+  projectTask(where: UniqueInput!): ProjectTask
+  projectTasks(
+    where: ProjectTaskWhereInput
+    orderBy: ProjectTaskOrderByInput
+    take: Int
+    skip: Int
+  ): ProjectTasks
+}
+
+extend type Mutation {
+  createProjectTask(data: ProjectTaskCreateInput!): ProjectTask
+  updateProjectTask(
+    where: UniqueInput!
+    data: ProjectTaskUpdateInput!
+  ): ProjectTask
+  deleteProjectTask(where: UniqueInput!): ProjectTask
+}
+
+type ProjectTask {
+  project: Project
+  projectId: ID
+
+  productionProductItem: ProductionProductItem
+
+  invites: Invites
+
+  id: String
+  status: StageStatus
+
+  stage: ProjectStage
+
+  title: String
+  description: String
+
+  startTime: Date
+  endTime: Date
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type ProjectTasks {
+  projectTasks: [ProjectTask!]
+  count(where: ProjectTaskWhereInput): Int
+}
+
+input ProjectTaskCreateInput {
+  project: ProjectConnection
+  stage: ProjectStage!
+  title: String!
+  description: String
+
+  productionProductItem: ProductionProductItemConnection
+
+  startTime: Date
+  endTime: Date
+}
+
+input ProjectTaskRelationInput {
+  some: ProductionProductItemWhereInput
+  every: ProductionProductItemWhereInput
+  none: ProductionProductItemWhereInput
+}
+
+input ProjectTaskWhereInput {
+  id: StringFilter
+
+  status: StageStatusFilter
+
+  title: String
+
+  startTime: DateFilter
+  endTime: DateFilter
+
+  project: ProjectWhereInput
+  projectId: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+}
+
+input ProjectTaskOrderByInput {
+  id: SortType
+
+  status: SortType
+
+  project: ProjectOrderByInput
+  projectId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+
+  startTime: SortType
+  endTime: SortType
+}
+
+input ProjectTaskUpdateInput {
+  status: StageStatus
+  description: String
+  title: String
+  startTime: Date
+  endTime: Date
+}
+
+input ProjectTaskConnection {
+  connect: UniqueInput
+  create: ProjectTaskCreateInput
+}
+
+extend type ProductionProductItem {
+  projectTasks: ProjectTasks
+}
+
+extend input ProductionProductItemWhereInput {
+  projectTasks: ProjectTaskRelationInput
+}
+
+extend type Project {
+  projectTasks: ProjectTasks
+}
+
+extend input ProjectWhereInput {
+  projectTasks: ProjectTaskRelationInput
+}
+
+extend type Invite {
+  projectTask: ProjectTask
+}
+
+extend input InviteWhereInput {
+  projectTask: ProjectTaskRelationInput
+}
+
+extend input InviteCreateInput {
+  projectTaskId: String
+}

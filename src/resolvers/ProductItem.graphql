@@ -1,0 +1,130 @@
+extend type Query {
+  productItem(where: UniqueInput!): ProductItem
+  productItems(
+    where: ProductItemWhereInput
+    orderBy: ProductItemOrderByInput
+    take: Int
+    skip: Int
+  ): Products
+
+  isExistProductItem(where: ProductItemWhereInput): Boolean
+}
+
+extend type Mutation {
+  createProductItems(data: [ProductItemCreateInput!]!): BatchPayload
+  updateProductItems(
+    where: ProductItemWhereInput
+    data: ProductItemUpdateInput!
+  ): BatchPayload
+  deleteProductItems(where: ProductItemWhereInput): BatchPayload
+}
+
+type ProductItem {
+  id: ID
+  title: String
+
+  product: Product
+  productId: ID
+
+  isBrief: Boolean
+  isManuscript: Boolean
+  isTranslation: Boolean
+  isVoiceover: Boolean
+  isStoryboard: Boolean
+  isIllustration: Boolean
+  isAnimation: Boolean
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type ProductItems {
+  productItems: [ProductItem!]
+  count(where: ProductItemWhereInput): Int
+}
+
+input ProductItemRelation {
+  some: ProductItemWhereInput
+  every: ProductItemWhereInput
+  none: ProductItemWhereInput
+}
+
+extend type Product {
+  productItems(
+    where: ProductItemWhereInput
+    orderBy: ProductItemOrderByInput
+    take: Int
+    skip: Int
+  ): ProductItems
+}
+
+extend input ProductWhereInput {
+  productItems: ProductItemRelation
+}
+
+input ProductItemWhereInput {
+  id: StringFilter
+  title: StringFilter
+
+  product: ProductWhereInput
+  productId: StringFilter
+
+  isBrief: BoolFilter
+  isManuscript: BoolFilter
+  isTranslation: BoolFilter
+  isVoiceover: BoolFilter
+  isStoryboard: BoolFilter
+  isIllustration: BoolFilter
+  isAnimation: BoolFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+}
+
+input ProductItemOrderByInput {
+  id: SortType
+  title: SortType
+
+  product: ProductOrderByInput
+  productId: SortType
+
+  isBrief: SortType
+  isManuscript: SortType
+  isTranslation: SortType
+  isVoiceover: SortType
+  isStoryboard: SortType
+  isIllustration: SortType
+  isAnimation: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input ProductItemCreateInput {
+  title: String!
+  productId: ID
+
+  isBrief: Boolean
+  isManuscript: Boolean
+  isTranslation: Boolean
+  isVoiceover: Boolean
+  isStoryboard: Boolean
+  isIllustration: Boolean
+  isAnimation: Boolean
+}
+
+input ProductItemUpdateInput {
+  title: String
+
+  isBrief: Boolean
+  isManuscript: Boolean
+  isTranslation: Boolean
+  isVoiceover: Boolean
+  isStoryboard: Boolean
+  isIllustration: Boolean
+  isAnimation: Boolean
+}
+
+input ProductItemConnection {
+  create: [ProductItemCreateInput!]
+}

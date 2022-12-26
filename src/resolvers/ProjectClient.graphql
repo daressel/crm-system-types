@@ -1,0 +1,133 @@
+enum ProjectClientStatus {
+  SEND_INVITE
+  DEACTIVATED
+  ACTIVE
+  DRAFT
+}
+
+extend type Query {
+  projectClient(where: UniqueInput!): ProjectClient
+  projectClients(
+    where: ProjectClientWhereInput
+    orderBy: ProjectClientOrderByInput
+    take: Int
+    skip: Int
+  ): ProjectClients
+}
+
+extend type Mutation {
+  createProjectClients(
+    where: ProjectUniqueInput
+    data: ProjectClientsConnection
+  ): Project
+  inviteProjectClients(data: InviteProjectClientsInput): String
+  updateProjectClients(
+    where: ProjectClientWhereInput
+    data: ProjectClientUpdateInput!
+  ): BatchPayload
+  deleteProjectClients(where: ProjectClientWhereInput): BatchPayload
+}
+
+type ProjectClient {
+  id: ID
+
+  status: ProjectClientStatus
+
+  project: Project
+  projectId: ID
+
+  client: Client
+  clientId: ID
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type ProjectClients {
+  projectClients: [ProjectClient!]
+  count(where: ProjectClientWhereInput): Int
+}
+
+input InviteProjectClientsInput {
+  inviteProjectClient: [InviteProjectClient!]!
+  studioTitle: String!
+  descriptions: String
+  projectTitle: String!
+  studioAvatar: String
+  projectId: String!
+}
+
+input InviteProjectClient {
+  recipientFirstName: String!
+  recipientLastName: String!
+  email: String!
+  userId: String!
+}
+
+input ProjectClientRelationInput {
+  some: ProjectClientWhereInput
+  every: ProjectClientWhereInput
+  none: ProjectClientWhereInput
+}
+
+extend type Client {
+  projectClients(
+    where: ProjectClientWhereInput
+    orderBy: ProjectClientOrderByInput
+    take: Int
+    skip: Int
+  ): ProjectClients
+}
+
+extend input ClientWhereInput {
+  projectClients: ProjectClientRelationInput
+}
+
+input ProjectClientWhereInput {
+  status: ProjectClientStatusFilter
+
+  project: ProjectWhereInput
+  projectId: StringFilter
+
+  client: ClientWhereInput
+  clientId: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+
+  AND: [ProjectClientWhereInput!]
+  OR: [ProjectClientWhereInput!]
+  NOT: [ProjectClientWhereInput!]
+}
+
+input ProjectClientOrderByInput {
+  status: SortType
+
+  project: ProjectOrderByInput
+  projectId: SortType
+
+  client: ClientOrderByInput
+  clientId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input ProjectClientCreateInput {
+  status: ProjectClientStatus
+  project: ProjectConnection
+  client: ClientConnection
+}
+
+input ProjectClientUpdateInput {
+  status: ProjectClientStatus
+}
+
+input ProjectClientsConnection {
+  create: [ProjectClientCreateInput!]
+}
+
+input ProjectClientConnectOrCreateInput {
+  create: ProjectClientCreateInput!
+  where: UniqueInput
+}

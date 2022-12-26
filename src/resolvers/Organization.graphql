@@ -1,0 +1,126 @@
+extend type Query {
+  organization(where: UniqueInput!): Organization
+  organizations(
+    where: OrganizationWhereInput
+    orderBy: OrganizationOrderByInput
+    take: Int
+    skip: Int
+  ): Organizations
+
+  isExistOrganization(where: OrganizationWhereInput): Boolean
+}
+
+extend type Mutation {
+  createOrganization(data: OrganizationCreateInput!): Organization
+  updateOrganization(
+    where: UniqueInput!
+    data: OrganizationUpdateInput!
+  ): Organization
+  deleteOrganization(where: UniqueInput!): Organization
+}
+
+type Organization {
+  id: ID
+  title: String
+  code: String
+  country: String
+  website: String
+  address: String
+
+  studio: Studio
+  studioId: ID
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Organizations {
+  organizations: [Organization!]
+  count(where: OrganizationWhereInput): Int
+}
+
+input OrganizationRelationInput {
+  some: OrganizationWhereInput
+  every: OrganizationWhereInput
+  none: OrganizationWhereInput
+}
+
+extend type Studio {
+  organizations(
+    where: OrganizationWhereInput
+    orderBy: OrganizationOrderByInput
+    take: Int
+    skip: Int
+  ): Organizations
+}
+
+extend input StudioUpdateInput {
+  organizations: OrganizationsConnection
+}
+
+extend input UserWhereInput {
+  organizations: OrganizationRelationInput
+}
+
+extend type Client {
+  organizations(
+    where: OrganizationWhereInput
+    orderBy: OrganizationOrderByInput
+    take: Int
+    skip: Int
+  ): Organizations
+}
+
+input OrganizationWhereInput {
+  title: StringFilter
+  code: StringFilter
+  country: StringFilter
+  website: StringFilter
+  address: StringFilter
+
+  AND: [OrganizationWhereInput!]
+  OR: [OrganizationWhereInput!]
+  NOT: [OrganizationWhereInput!]
+}
+
+input OrganizationOrderByInput {
+  title: SortType
+  code: SortType
+  country: SortType
+  website: SortType
+  address: SortType
+}
+
+input OrganizationCreateInput {
+  title: String!
+  studio: StudioConnection
+  code: String
+  country: String
+  website: String
+  address: String
+}
+
+input OrganizationUpdateInput {
+  title: String
+  code: String
+  country: String
+  website: String
+  address: String
+}
+
+input OrganizationConnection {
+  connect: UniqueInput
+  connectOrCreate: OrganizationConnectOrCreateInput
+  create: OrganizationCreateInput
+}
+
+input OrganizationConnectOrCreateInput {
+  where: UniqueInput!
+  create: OrganizationCreateInput!
+}
+
+input OrganizationsConnection {
+  connect: [UniqueInput!]
+  connectOrCreate: [OrganizationConnectOrCreateInput!]
+  create: [OrganizationCreateInput!]
+}

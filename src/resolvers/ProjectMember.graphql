@@ -1,0 +1,170 @@
+input ProjectMemberUniqueInput {
+  id: ID
+  studioMemberId_projectId: ProjectMemberUniqueFields
+}
+
+input ProjectMemberUniqueFields {
+  studioMemberId: ID!
+  projectId: ID!
+}
+
+extend type Query {
+  projectMember(where: UniqueInput!): ProjectMember
+  projectMembers(
+    where: ProjectMemberWhereInput
+    orderBy: ProjectMemberOrderByInput
+    take: Int
+    skip: Int
+  ): ProjectMembers
+}
+
+extend type Mutation {
+  createProjectMembers(
+    where: ProjectUniqueInput
+    data: ProjectMemberConnection
+  ): Project
+  inviteProjectMembers(data: InviteProjectMembersInput): String
+  updateProjectMembers(data: [ProjectMembersUpdateInput]): ProjectMembers
+  updateProjectMember(
+    where: ProjectMemberUniqueInput!
+    data: ProjectMemberUpdateInput!
+  ): ProjectMember
+  deleteProjectMembers(where: ProjectMemberWhereInput): BatchPayload
+}
+
+input ProjectMembersUpdateInput {
+  where: ProjectMemberUniqueInput
+  data: ProjectMemberUpdateInput
+}
+
+type ProjectMember {
+  id: ID
+
+  languages: Language
+
+  project: Project
+  projectId: ID
+
+  studioMember: StudioMember
+  studioMemberId: ID
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type ProjectMembers {
+  projectMembers: [ProjectMember!]
+  count(where: ProjectMemberWhereInput): Int
+}
+
+input InviteProjectMembersInput {
+  inviteProjectMember: [InviteProjectMember!]!
+  studioTitle: String!
+  descriptions: String
+  projectTitle: String!
+  studioAvatar: String
+  projectId: String!
+  projectTaskId: String!
+}
+
+input InviteProjectMember {
+  recipientFirstName: String!
+  recipientLastName: String!
+  email: String!
+  userId: String!
+}
+
+input ProjectMemberRelationInput {
+  some: ProjectMemberWhereInput
+  every: ProjectMemberWhereInput
+  none: ProjectMemberWhereInput
+}
+
+extend type Project {
+  members(
+    where: ProjectMemberWhereInput
+    orderBy: ProjectMemberOrderByInput
+    take: Int
+    skip: Int
+  ): ProjectMembers
+}
+
+extend input ProjectWhereInput {
+  members: ProjectMemberRelationInput
+}
+
+extend type StudioMember {
+  projectMembers(
+    where: ProjectMemberWhereInput
+    orderBy: ProjectMemberOrderByInput
+    take: Int
+    skip: Int
+  ): ProjectMembers
+}
+
+extend input StudioMemberWhereInput {
+  projectMembers: ProjectMemberRelationInput
+}
+
+input ProjectMemberWhereInput {
+  languages: LanguageFilter
+
+  project: ProjectWhereInput
+  projectId: StringFilter
+
+  studioMember: StudioMemberWhereInput
+  studioMemberId: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+
+  AND: [ProjectMemberWhereInput!]
+  OR: [ProjectMemberWhereInput!]
+  NOT: [ProjectMemberWhereInput!]
+}
+
+input ProjectMemberOrderByInput {
+  project: ProjectOrderByInput
+  projectId: SortType
+
+  studioMember: StudioMemberOrderByInput
+  studioMemberId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input ProjectMemberCreateInput {
+  studioMemberId: ID!
+  projectId: String
+  studioMember: StudioMemberConnection
+  languages: [Language!]
+  manuscripter: ProjectManuscripterConnection
+  briefer: ProjectBrieferConnection
+  translator: ProjectTranslatorConnection
+  storyboarder: ProjectStoryboarderConnection
+  illustrator: ProjectIllustratorConnection
+  voiceoverer: ProjectVoiceovererConnection
+  animator: ProjectAnimatorConnection
+}
+
+input ProjectMemberUpdateInput {
+  languages: [Language!]
+  manuscripter: ProjectManuscripterConnection
+  briefer: ProjectBrieferConnection
+  translator: ProjectTranslatorConnection
+  storyboarder: ProjectStoryboarderConnection
+  illustrator: ProjectIllustratorConnection
+  voiceoverer: ProjectVoiceovererConnection
+  animator: ProjectAnimatorConnection
+}
+
+input ProjectMemberConnection {
+  create: [ProjectMemberCreateInput!]
+  connectOrCreate: ProjectMemberConnectOrCreateInput
+}
+
+input ProjectMemberConnectOrCreateInput {
+  create: ProjectMemberCreateInput!
+  where: UniqueInput
+}

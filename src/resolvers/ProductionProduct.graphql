@@ -1,0 +1,169 @@
+input ProductionProductUniqueInput {
+  id: ID
+  title_productionId: ProductionProductUniqueFields
+}
+
+input ProductionProductUniqueFields {
+  title: String!
+  productionId: ID!
+}
+
+extend type Query {
+  productionProduct(where: ProductionProductUniqueInput!): ProductionProduct
+  productionProducts(
+    where: ProductionProductWhereInput
+    orderBy: ProductionProductOrderByInput
+    take: Int
+    skip: Int
+  ): ProductionProducts
+
+  isExistProductionProduct(where: ProductionProductWhereInput): Boolean
+}
+
+extend type Mutation {
+  createProductionProducts(
+    where: ProductionUniqueInput!
+    data: ProductionProductsConnection!
+  ): Production
+  updateProductionProducts(
+    where: ProductionProductWhereInput
+    data: ProductionProductUpdateInput!
+  ): BatchPayload
+  deleteProductionProducts(where: ProductionProductWhereInput): BatchPayload
+
+  dragProductionProduct(data: DragProductionProductInput!): Production
+}
+
+type ProductionProduct {
+  id: ID
+  title: String
+  price: Int
+  amount: Int
+  discount: Int
+  tax: Int
+
+  withTax: Boolean
+  isSet: Boolean
+
+  production: Production
+  productionId: ID
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type ProductionProducts {
+  productionProducts(
+    where: ProductionProductWhereInput
+    orderBy: ProductionProductOrderByInput
+    take: Int
+    skip: Int
+  ): [ProductionProduct!]
+  count(where: ProductionProductWhereInput): Int
+}
+
+input ProductionProductRelation {
+  some: ProductionProductWhereInput
+  every: ProductionProductWhereInput
+  none: ProductionProductWhereInput
+}
+
+extend type Production {
+  productionProducts(
+    where: ProductionProductWhereInput
+    orderBy: ProductionProductOrderByInput
+    take: Int
+    skip: Int
+  ): ProductionProducts
+}
+
+extend input ProductionWhereInput {
+  productionProducts: ProductionProductRelation
+}
+
+input ProductionProductWhereInput {
+  id: StringFilter
+  title: StringFilter
+  price: IntFilter
+  amount: IntFilter
+  discount: IntFilter
+  tax: IntFilter
+
+  withTax: BoolFilter
+  isSet: BoolFilter
+
+  production: ProductionWhereInput
+  productionId: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+
+  AND: [ProductionProductWhereInput!]
+  OR: [ProductionProductWhereInput!]
+  NOT: [ProductionProductWhereInput!]
+}
+
+input ProductionProductOrderByInput {
+  id: SortType
+  title: SortType
+  price: SortType
+  amount: SortType
+  discount: SortType
+  tax: SortType
+
+  withTax: SortType
+  isSet: SortType
+
+  production: ProductionOrderByInput
+  productionId: SortType
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input ProductionProductCreateInput {
+  productionId: ID
+  title: String!
+  price: Int!
+  amount: Int
+  discount: Int
+  tax: Int
+
+  productionProductItems: ProductionProductItemsConnection
+
+  withTax: Boolean
+  isSet: Boolean
+}
+
+input ProductionProductUpdateInput {
+  title: String
+  price: Int
+  amount: Int
+  discount: Int
+  tax: Int
+
+  withTax: Boolean
+  isSet: Boolean
+}
+
+input ProductionProductsConnection {
+  create: [ProductionProductCreateInput!]
+  connectOrCreate: [ProductionProductConnectOrCreateInput!]
+  connect: [ProductionProductUniqueInput!]
+}
+
+input ProductionProductConnection {
+  create: ProductionProductCreateInput
+  connectOrCreate: ProductionProductConnectOrCreateInput
+  connect: ProductionProductUniqueInput
+}
+
+input ProductionProductConnectOrCreateInput {
+  where: ProductionProductUniqueInput!
+  create: ProductionProductCreateInput!
+}
+
+input DragProductionProductInput {
+  productionProductId: ID!
+  toProductionId: ID!
+}

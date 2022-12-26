@@ -1,0 +1,114 @@
+input ProductionUniqueInput {
+  id: ID
+  title_projectId: ProductionUniqueFields
+}
+
+input ProductionUniqueFields {
+  title: String!
+  projectId: ID!
+}
+
+extend type Query {
+  production(where: ProductionUniqueInput!): Production
+  productions(
+    where: ProductionWhereInput
+    orderBy: ProductionOrderByInput
+    take: Int
+    skip: Int
+  ): Productions
+
+  isExistProduction(where: ProductionWhereInput): Boolean
+}
+
+extend type Mutation {
+  createProductions(data: [ProductionCreateInput!]!): BatchPayload
+  updateProductions(
+    where: ProductionWhereInput
+    data: ProductionUpdateInput!
+  ): BatchPayload
+  deleteProductions(where: ProductionWhereInput): BatchPayload
+}
+
+type Production {
+  id: ID
+  title: String
+  visible: Boolean
+
+  project: Project
+  projectId: ID
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Productions {
+  productions: [Production!]
+  count(where: ProductionWhereInput): Int
+}
+
+input ProductionRelationInput {
+  some: ProductionWhereInput
+  every: ProductionWhereInput
+  none: ProductionWhereInput
+}
+
+extend type Project {
+  productions(
+    where: ProductionWhereInput
+    orderBy: ProductionOrderByInput
+    take: Int
+    skip: Int
+  ): Productions
+}
+
+extend input ProjectWhereInput {
+  productions: ProductionRelationInput
+}
+
+extend input ProjectCreateInput {
+  productions: ProductionsConnection
+}
+
+extend input ProjectUpdateInput {
+  productions: ProductionsConnection
+}
+
+input ProductionCreateInput {
+  title: String!
+  projectId: ID!
+}
+
+input ProductionUpdateInput {
+  title: String
+}
+
+input ProductionWhereInput {
+  id: StringFilter
+  title: StringFilter
+  visible: BoolFilter
+
+  project: ProjectWhereInput
+  projectId: StringFilter
+
+  createdAt: StringFilter
+  updatedAt: StringFilter
+
+  AND: [ProductionWhereInput!]
+  OR: [ProductionWhereInput!]
+  NOT: [ProductionWhereInput!]
+}
+
+input ProductionOrderByInput {
+  id: SortType
+  title: SortType
+  visible: SortType
+
+  project: ProjectOrderByInput
+
+  createdAt: SortType
+  updatedAt: SortType
+}
+
+input ProductionsConnection {
+  create: [ProductionCreateInput!]
+}
