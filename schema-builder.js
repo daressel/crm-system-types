@@ -9,7 +9,7 @@ const commonSchemaContent = fs.readFileSync(commonSchemaPath, {
   encoding: 'utf-8',
 });
 
-fs.writeFileSync(schemaPath, commonSchemaContent);
+fs.appendFileSync(schemaPath, commonSchemaContent);
 
 fs.readdir(folderName, (err, files) => {
   files.forEach((fileName) => {
